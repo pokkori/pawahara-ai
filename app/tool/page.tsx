@@ -122,6 +122,11 @@ export default function ClaimTool() {
           </div>
         </div>
       </div>
+      <footer className="text-center py-6 text-xs text-gray-400 border-t mt-8">
+        <a href="/legal" className="hover:underline">特定商取引法に基づく表記</a>
+        <span className="mx-2">|</span>
+        <a href="/privacy" className="hover:underline">プライバシーポリシー</a>
+      </footer>
     </main>
   );
 }

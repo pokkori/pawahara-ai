@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "プライバシーポリシー｜AIクレーム対応文ジェネレーター",
+  title: "プライバシーポリシー｜パワハラ対策AI",
 };
 
 export default function PrivacyPage() {

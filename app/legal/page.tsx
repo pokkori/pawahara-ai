@@ -4,7 +4,7 @@ const ITEMS = [
   { label: "販売業者", value: "levonadesign" },
   { label: "運営責任者", value: "levonadesign" },
   { label: "お問い合わせ", value: "levonadesign@gmail.com" },
-  { label: "販売価格", value: "スタンダードプラン ¥4,980/月、ビジネスプラン ¥9,800/月（税込）" },
+  { label: "販売価格", value: "プレミアムプラン ¥1,980/月（税込）" },
   { label: "支払方法", value: "クレジットカード（Visa・Mastercard・American Express・JCB）" },
   { label: "支払時期", value: "お申込み時に即時決済。以降、毎月同日に自動更新" },
   { label: "サービス提供時期", value: "決済完了後、即時ご利用いただけます" },
@@ -16,7 +16,7 @@ export default function LegalPage() {
   return (
     <div className="min-h-screen bg-white">
       <nav className="bg-white border-b px-6 py-4">
-        <Link href="/" className="font-bold text-gray-900">AIクレーム対応文</Link>
+        <Link href="/" className="font-bold text-gray-900">🛡️ パワハラ対策AI</Link>
       </nav>
       <div className="max-w-2xl mx-auto px-6 py-12">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">特定商取引法に基づく表記</h1>

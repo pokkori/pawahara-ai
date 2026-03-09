@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
-const SITE_URL = "https://claim-ai-beryl.vercel.app";
-const TITLE = "AIクレーム対応文ジェネレーター｜30秒でプロ品質の対応文を自動生成";
-const DESC = "クレーム内容を入力するだけ。お詫び文・原因説明・再発防止策をAIが自動構成。飲食・EC・小売・ホテルなど業種別対応。メール文＋電話スクリプト＋チェックリスト付き。無料3回。";
+const SITE_URL = "https://pawahara-ai.vercel.app";
+const TITLE = "パワハラ対策AI｜状況を入力するだけで証拠収集・内容証明・申告書を即生成";
+const DESC = "パワハラ・残業未払い・不当解雇の状況を入力するだけ。法的評価・証拠収集チェックリスト・内容証明文・労基署申告書を自動生成。弁護士費用ゼロで自分を守る。無料3回から。";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESC,
     url: SITE_URL,
-    siteName: "AIクレーム対応文ジェネレーター",
+    siteName: "パワハラ対策AI",
     locale: "ja_JP",
     type: "website",
   },
@@ -25,6 +24,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: TITLE,
     description: DESC,
+    site: "@levona_design",
   },
   metadataBase: new URL(SITE_URL),
 };
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ja">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} antialiased`}>
         {children}
         <Analytics />
       </body>

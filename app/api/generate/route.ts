@@ -1,152 +1,142 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
-import { isActiveSubscription } from "@/lib/supabase";
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-const FREE_LIMIT = 3;
-const COOKIE_KEY = "claim_use_count";
-const APP_ID = "claim";
+export const dynamic = "force-dynamic";
 
-const rateLimit = new Map<string, { count: number; resetAt: number }>();
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimit.get(ip);
-  if (!entry || now > entry.resetAt) { rateLimit.set(ip, { count: 1, resetAt: now + 60000 }); return true; }
-  if (entry.count >= 10) return false;
-  entry.count++;
-  return true;
+function getClient() {
+  return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 }
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get("x-forwarded-for") || "unknown";
-  if (!checkRateLimit(ip)) {
-    return NextResponse.json({ error: "リクエストが多すぎます。しばらく待ってから再試行してください。" }, { status: 429 });
-  }
-  const email = req.cookies.get("user_email")?.value;
-  let isPremium = false;
-  if (email) {
-    isPremium = await isActiveSubscription(email, APP_ID);
-  } else {
-    isPremium = req.cookies.get("stripe_premium")?.value === "1";
-  }
-  const cookieCount = parseInt(req.cookies.get(COOKIE_KEY)?.value || "0");
-  if (!isPremium && cookieCount >= FREE_LIMIT) {
-    return NextResponse.json({ error: "LIMIT_REACHED" }, { status: 429 });
-  }
   let body: Record<string, unknown>;
   try { body = await req.json(); }
   catch { return NextResponse.json({ error: "リクエストの形式が正しくありません" }, { status: 400 }); }
 
-  const { industry, situation, claimContent, severity, tone } = body as Record<string, string>;
-  if (!claimContent) return NextResponse.json({ error: "クレーム内容は必須です" }, { status: 400 });
-  if (claimContent.length > 1000) return NextResponse.json({ error: "クレーム内容は1000文字以内で入力してください" }, { status: 400 });
+  const { situation, duration, position, evidence } = body as Record<string, string | string[]>;
+  if (!situation || String(situation).trim() === "") {
+    return NextResponse.json({ error: "状況を入力してください" }, { status: 400 });
+  }
 
-  const toneGuide =
-    tone === "毅然"
-      ? "感情的にならず毅然とした姿勢で対応。謝り過ぎず事実を明確に伝え、再発防止策を論理的に示す。「大変ご迷惑をおかけしました」程度の謝罪にとどめ、過度な謝罪は避ける。"
-      : tone === "強硬"
-      ? "法的根拠・消費者契約法・業界規制を踏まえ毅然と対応。不当要求には明確に断る文言を含める。必要に応じ「法的対応を含む適切な措置を取らせていただく場合がある」旨を示唆。過度な謝罪は不要。"
-      : "誠実で丁寧な謝罪を中心に、お客様の気持ちに寄り添う温かみある対応。「心よりお詫び申し上げます」など真摯な謝罪表現を使用。";
+  const evidenceText = Array.isArray(evidence) && evidence.length ? evidence.join("、") : "特になし";
+  const durationText = duration ? String(duration).trim() : "不明";
+  const positionText = position ? String(position).trim() : "不明";
 
-  const severityGuide =
-    severity === "重大"
-      ? "法的リスク・風評被害・SNS拡散を考慮し、責任者名義・具体的な補償提示を含む最上級の対応文を作成。対応の速さと誠実さを最大限示す。"
-      : severity === "軽微"
-      ? "簡潔で温かみのある対応文を作成。過度な謝罪は避け、迅速な解決を示す。"
-      : "誠実かつプロフェッショナルな標準的対応文を作成。";
+  const prompt = `あなたは労働問題・ハラスメント対策の専門家AIです。
+以下の状況について、5つのセクションで対策書類を作成してください。
 
-  const industryContext = industry
-    ? `${industry}業界の慣習・専門用語・よくある補償内容を踏まえた対応文にすること。`
-    : "";
+【状況】
+${situation}
 
-  const prompt = `あなたはクレーム対応の第一人者コンサルタントです。20年の経験を持ち、大手企業のCS部門を指導してきた専門家として、以下のクレームに対する完全な対応セットを作成してください。
+【期間・頻度】
+${durationText}
 
-【クレーム情報】
-業種: ${industry || "一般"}
-状況: ${situation || "店舗・サービスへのクレーム"}
-クレーム内容: ${claimContent}
-深刻度: ${severity || "通常"}
+【加害者の役職】
+${positionText}
 
-【対応方針】
-${severityGuide}
-${industryContext}
-トーン: ${toneGuide}
-
-以下の構成で出力してください。各セクションの区切りは必ず「---」（ハイフン3つのみの行）を使ってください：
+【証拠・記録の状況】
+${evidenceText}
 
 ---
-## 📧 メール返信文（そのまま使えるバージョン）
+以下の形式で出力してください（各セクションは必ず ===TAG=== で区切ること）:
 
-件名: 【重要】${situation || "ご指摘"}についてのご連絡
+=== LEGAL ===
+【法的評価】
+- パワハラ防止法（労働施策総合推進法）の6類型に照らした判定
+- 労働基準法違反の有無（残業未払い・不当解雇など）
+- 違反している場合は具体的な条文番号
+- 法的に認められやすいポイント・認められにくいポイント
+- 総合評価（「明確にパワハラです」「グレーゾーンです」「該当しない可能性があります」など明確に）
 
-（宛名）様
+=== EVIDENCE ===
+【証拠収集チェックリスト】
+今日からできること:
+- 録音の方法（スマホを使った具体的手順）
+- スクリーンショット・印刷で保存すべきもの
+- 記録日誌の書き方（日時・場所・発言内容・目撃者）
 
-（本文：①お詫び→②状況確認と原因→③再発防止策→④補償・対応策→⑤今後の対応→⑥締め）
+今週中にやること:
+- 診断書取得のタイミングと病院の選び方
+- 社内相談窓口への相談記録の残し方
 
-敬具
+証拠として有効なもの・注意点:
+- 有効: 録音・メール・LINE・診断書・日誌・タイムカード
+- 改ざん防止の注意点
 
-株式会社〇〇
-担当: 〇〇 〇〇
-TEL: 000-0000-0000
+=== CERTIFIED ===
+【内容証明文（全文）】
+以下は会社または加害者上司に送る内容証明書の全文です。そのまま使用できる形で作成してください。
+
+令和　　年　　月　　日
+
+[受取人氏名または会社名・代表者名] 殿
+[受取人住所]
+
+[差出人氏名]
+[差出人住所]
+
+内　容　証　明
+
+（事実の記載・要求事項・回答期限を含む完全な文章）
+
+以上
+
+=== REPORT ===
+【相談・申告書ドラフト】
+労働基準監督署または都道府県労働局への相談・申告書の記入例を作成してください。
+
+申告者情報（記入例）:
+氏名: [氏名]
+住所: [住所]
+電話番号: [電話番号]
+勤務先: [会社名・部署]
+
+申告内容（具体的記述例）:
+（状況に基づいた申告内容の記述例を具体的に）
+
+添付書類リスト:
+（提出すべき証拠書類のリスト）
+
+提出先・提出方法:
+- 管轄の労働基準監督署（会社所在地を管轄する署）
+- 総合労働相談コーナー（都道府県労働局）
+- 持参 or 郵送可
+
+=== OPTIONS ===
+【選択肢マップ】
+
+① 会社と戦う（在職しながら解決）
+手順: 内容証明送付 → 労基署・労働局へ申告 → 労働審判（6ヶ月以内）→ 訴訟
+費用目安: 弁護士依頼 着手金20〜50万円 / 本人申請 数千円〜
+期間目安: 3ヶ月〜2年
+回収見込み: 未払い賃金の全額・慰謝料10〜100万円
+
+② 退職して解決する
+退職前にやること: 証拠保全・有給消化・離職理由「会社都合」の確認
+退職後に請求できるもの: 未払い残業代・慰謝料・失業給付（最大330日）
+退職代行サービス: 2〜5万円で即日退職可能
+
+③ 示談・和解で解決する
+進め方: 代理人（弁護士）を立てて交渉 or 労働局のあっせん制度を活用
+相場: パワハラ 50〜200万円 / 残業未払い 全額+付加金
+示談書のポイント: 守秘義務条項・再就職への影響・口外禁止条項の確認
+
+【このケースでのおすすめ】
+（上記の状況を踏まえ、最もおすすめの選択肢とその理由を2〜3文で明記）
 
 ---
-## 📞 電話対応スクリプト
-
-**【冒頭・第一声】**
-（お客様が電話に出た瞬間の言葉。謝罪と自己紹介を含む）
-
-**【状況確認フェーズ】**
-（怒りが少し落ち着いたタイミングで確認すべき質問。3〜4点）
-
-**【解決提案フェーズ】**
-（具体的に提示する補償・対応内容）
-
-**【想定されるお客様の反応への切り返し】**
-・「SNSに投稿する」と言われた場合:
-・「慰謝料を請求する」と言われた場合:
-・「二度と来ない」と言われた場合:
-
-**【クロージング】**
-（感謝と今後の関係継続への言葉）
-
----
-## ✅ 対応チェックリスト
-
-**■ 初動対応（発生から1時間以内）**
-- [ ]
-- [ ]
-- [ ]
-
-**■ 情報収集・原因究明（当日中）**
-- [ ]
-- [ ]
-
-**■ 再発防止（3日以内）**
-- [ ]
-- [ ]
-${severity === "重大" ? "\n**■ エスカレーション対応**\n- [ ] 法務・上長への報告\n- [ ] 補償・返金の承認取得\n- [ ] 広報・SNS監視体制の確認" : ""}
-
----
-## 💡 このクレームを顧客満足に変えるポイント
-
-（このクレームをリピーター獲得のチャンスに変える具体的なアドバイスを3点。それぞれ「なぜ効果があるか」の理由も添えて。）
-
----
-※ 実際の状況に応じて文言を調整してご使用ください。`;
+※ 本出力は参考情報であり法的助言ではありません。重要な決断の前には弁護士にご相談ください。`;
 
   try {
+    const client = getClient();
     const message = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 3000,
+      max_tokens: 4000,
       messages: [{ role: "user", content: prompt }],
     });
     const text = message.content[0].type === "text" ? message.content[0].text : "";
-    const newCount = cookieCount + 1;
-    const res = NextResponse.json({ result: text, count: newCount });
-    res.cookies.set(COOKIE_KEY, String(newCount), { maxAge: 60 * 60 * 24 * 30, sameSite: "lax", httpOnly: true, secure: true });
-    return res;
+    return NextResponse.json({ text });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "AI生成中にエラーが発生しました。しばらく待ってから再試行してください。" }, { status: 500 });
+    return NextResponse.json({ error: "AI生成中にエラーが発生しました。" }, { status: 500 });
   }
 }

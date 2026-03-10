@@ -22,14 +22,14 @@ export default function PrivacyPage() {
         <section className="space-y-8 text-sm text-gray-700 leading-relaxed">
           <div>
             <h2 className="font-bold text-gray-900 mb-2">1. 事業者情報</h2>
-            <p>本サービス「AIクレーム対応文ジェネレーター」（以下「本サービス」）は、個人が運営するWebサービスです。</p>
+            <p>本サービス「パワハラ対策AI」（以下「本サービス」）は、個人が運営するWebサービスです。</p>
           </div>
 
           <div>
             <h2 className="font-bold text-gray-900 mb-2">2. 取得する情報</h2>
             <p>本サービスでは、以下の情報を取得する場合があります。</p>
             <ul className="list-disc list-inside mt-2 space-y-1">
-              <li>フォームに入力いただいた情報（業種・クレーム内容など）</li>
+              <li>フォームに入力いただいた情報（状況・相手との関係・内容など）</li>
               <li>Cookie（利用回数の管理に使用）</li>
               <li>アクセスログ（IPアドレス・ブラウザ情報）</li>
             </ul>
@@ -51,6 +51,7 @@ export default function PrivacyPage() {
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>法令に基づく場合</li>
               <li>AI生成のためにAnthropicのAPIへ入力内容を送信する場合（Anthropicのプライバシーポリシーが適用されます）</li>
+              <li>決済処理のためPAY.JP（PAY.JP株式会社）に提供する場合（PAY.JPのプライバシーポリシーに従います）</li>
             </ul>
           </div>
 
@@ -66,7 +67,7 @@ export default function PrivacyPage() {
 
           <div>
             <h2 className="font-bold text-gray-900 mb-2">7. 免責事項</h2>
-            <p>本サービスが生成するコンテンツはAIによる自動生成であり、情報提供を目的としています。生成内容の正確性・適切性を保証するものではありません。実際のクレーム対応については専門家にご相談ください。</p>
+            <p>本サービスが生成するコンテンツはAIによる自動生成であり、情報提供を目的としています。生成内容の正確性・適切性を保証するものではありません。実際のハラスメント対応については専門家（弁護士・社労士等）にご相談ください。</p>
           </div>
 
           <div>
@@ -76,7 +77,7 @@ export default function PrivacyPage() {
 
           <div>
             <h2 className="font-bold text-gray-900 mb-2">9. お問い合わせ</h2>
-            <p>本ポリシーに関するご質問は、サービス内のお問い合わせ方法からご連絡ください。</p>
+            <p>本ポリシーに関するご質問は levonadesign@gmail.com までご連絡ください。</p>
           </div>
         </section>
       </article>

@@ -1,6 +1,7 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import PayjpModal from "@/components/PayjpModal";
 
 const FREE_LIMIT = 3;
 const TABS = ["法的評価", "証拠収集GL", "内容証明文", "申告書", "選択肢マップ"] as const;
@@ -81,7 +82,15 @@ export default function PawaharaAI() {
   const [error, setError] = useState("");
   const [isPremium, setIsPremium] = useState(false);
   const [usageCount, setUsageCount] = useState(0);
+  const [showPayjp, setShowPayjp] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch("/api/auth/status")
+      .then((r) => r.json())
+      .then((d) => setIsPremium(d.isPremium))
+      .catch(() => {});
+  }, []);
 
   const toggleEvidence = (e: string) => {
     setEvidence((prev) => prev.includes(e) ? prev.filter((x) => x !== e) : [...prev, e]);
@@ -91,11 +100,7 @@ export default function PawaharaAI() {
     setSituation((prev) => prev ? prev + "\n" + p : p);
   };
 
-  const startCheckout = async () => {
-    const res = await fetch("/api/stripe/checkout", { method: "POST" });
-    const { url } = await res.json();
-    if (url) window.location.href = url;
-  };
+  const startCheckout = () => setShowPayjp(true);
 
   const handleGenerate = async () => {
     if (!situation.trim()) { setError("状況を入力してください"); return; }
@@ -136,6 +141,14 @@ export default function PawaharaAI() {
 
   return (
     <main className="min-h-screen bg-white">
+      {showPayjp && (
+        <PayjpModal
+          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
+          planLabel="プレミアムプラン ¥1,980/月 — 生成回数無制限"
+          onSuccess={() => { setShowPayjp(false); setIsPremium(true); }}
+          onClose={() => setShowPayjp(false)}
+        />
+      )}
       {/* Nav */}
       <nav className="border-b border-gray-100 px-6 py-4 sticky top-0 bg-white/95 backdrop-blur z-10">
         <div className="max-w-5xl mx-auto flex items-center justify-between">

@@ -171,8 +171,8 @@ export default function PawaharaAI() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
             <div className="text-3xl mb-3">🛡️</div>
-            <h2 className="text-lg font-bold mb-2">無料回数（3回）を使い切りました</h2>
-            <p className="text-sm text-gray-500 mb-4">プレミアムプランで対策書類を無制限に作成できます</p>
+            <h2 className="text-lg font-bold mb-2">状況は変わります。記録は続けてください。</h2>
+            <p className="text-sm text-gray-500 mb-4">新たなパワハラが起きるたびに対策書類が必要です。証拠が増えるほど有利になります。</p>
             <ul className="text-xs text-gray-400 text-left mb-5 space-y-1">
               <li>✅ 生成回数 無制限</li>
               <li>✅ 全5タブの書類生成</li>
@@ -400,7 +400,22 @@ export default function PawaharaAI() {
                 ))}
               </div>
               <div className="p-6">
-                <div className="flex justify-end mb-4">
+                <div className="flex justify-end gap-2 mb-4">
+                  {activeTab === "法的評価" && result?.["法的評価"] && (
+                    <a
+                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                        "AIがパワハラ診断をしました 🛡️\n\n" +
+                        result["法的評価"].slice(0, 100) + "...\n\n" +
+                        "同じ状況で悩んでいる人に届けたい👇\n" +
+                        "#パワハラ対策AI #ブラック企業対策 #労働問題"
+                      )}&url=${encodeURIComponent("https://pawahara-ai.vercel.app")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-white bg-black rounded-lg px-4 py-2 hover:bg-gray-800 transition-colors"
+                    >
+                      𝕏 シェア
+                    </a>
+                  )}
                   <button
                     onClick={copyTab}
                     className="text-sm text-gray-500 border border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors"

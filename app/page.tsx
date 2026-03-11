@@ -168,9 +168,8 @@ export default function PawaharaAI() {
           🛡️ パワハラ対策AI — 弁護士費用ゼロで自分を守る
         </div>
         <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
-          状況を入力するだけ。<br />
-          <span className="text-red-600">法的評価・証拠収集・内容証明・申告書</span><br />
-          をAIが即生成
+          あなたの状況は、<br />
+          <span className="text-red-600">法的にアウトです。</span>
         </h1>
         <p className="text-gray-600 text-lg mb-4">
           パワハラ・残業未払い・不当解雇に悩んでいませんか？<br />

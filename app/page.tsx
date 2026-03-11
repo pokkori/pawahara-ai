@@ -144,7 +144,7 @@ export default function PawaharaAI() {
       {showPayjp && (
         <PayjpModal
           publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
-          planLabel="プレミアムプラン ¥1,980/月 — 生成回数無制限"
+          planLabel="プレミアムプラン ¥2,980/月 — 生成回数無制限"
           onSuccess={() => { setShowPayjp(false); setIsPremium(true); }}
           onClose={() => setShowPayjp(false)}
         />
@@ -174,7 +174,7 @@ export default function PawaharaAI() {
         <p className="text-gray-600 text-lg mb-4">
           パワハラ・残業未払い・不当解雇に悩んでいませんか？<br />
           弁護士に頼むと着手金だけで<strong>30〜100万円</strong>。<br />
-          AIなら<strong>月¥1,980</strong>で対策書類を無制限に作成できます。
+          AIなら<strong>月¥2,980</strong>で対策書類を無制限に作成できます。
         </p>
         <p className="text-sm text-gray-400 mb-6">※ 本サービスは法的助言ではありません。参考情報としてご活用ください。</p>
         {/* Cialdini: 社会的証明 + 権威 */}
@@ -335,7 +335,7 @@ export default function PawaharaAI() {
               <div className="text-center">
                 <p className="text-xs text-gray-400 mb-2">残り無料回数: {Math.max(0, FREE_LIMIT - usageCount)}回</p>
                 <button onClick={startCheckout} className="text-sm text-red-600 underline hover:text-red-800">
-                  プレミアムプランで無制限に使う（¥1,980/月）→
+                  プレミアムプランで無制限に使う（¥2,980/月）→
                 </button>
               </div>
             )}
@@ -413,7 +413,7 @@ export default function PawaharaAI() {
             <div className="bg-red-600 rounded-2xl p-6 text-white relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full">おすすめ</div>
               <div className="text-lg font-bold mb-2">プレミアムプラン</div>
-              <div className="text-3xl font-bold mb-4">¥1,980<span className="text-lg font-normal">/月</span></div>
+              <div className="text-3xl font-bold mb-4">¥2,980<span className="text-lg font-normal">/月</span></div>
               <ul className="text-sm space-y-2 mb-6 text-left">
                 <li>✅ 生成回数 無制限</li>
                 <li>✅ 全5タブの書類生成</li>

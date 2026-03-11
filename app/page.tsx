@@ -65,10 +65,10 @@ function getUsageCount(): number {
   if (typeof window === "undefined") return 0;
   return parseInt(localStorage.getItem("pawahara_usage") ?? "0", 10);
 }
-function incrementUsage(): number {
-  const n = getUsageCount() + 1;
-  localStorage.setItem("pawahara_usage", String(n));
-  return n;
+function syncUsageCount(serverCount: number): void {
+  if (typeof window === "undefined") return;
+  // サーバー側cookieカウントを正として同期（シークレット窓回避を防止）
+  localStorage.setItem("pawahara_usage", String(serverCount));
 }
 
 export default function PawaharaAI() {
@@ -83,6 +83,7 @@ export default function PawaharaAI() {
   const [isPremium, setIsPremium] = useState(false);
   const [usageCount, setUsageCount] = useState(0);
   const [showPayjp, setShowPayjp] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -90,6 +91,8 @@ export default function PawaharaAI() {
       .then((r) => r.json())
       .then((d) => setIsPremium(d.isPremium))
       .catch(() => {});
+    // localStorageから初期値を読み込む（表示用補助）
+    setUsageCount(getUsageCount());
   }, []);
 
   const toggleEvidence = (e: string) => {
@@ -100,14 +103,15 @@ export default function PawaharaAI() {
     setSituation((prev) => prev ? prev + "\n" + p : p);
   };
 
-  const startCheckout = () => setShowPayjp(true);
+  const startCheckout = () => setShowPaywall(true);
 
   const handleGenerate = async () => {
     if (!situation.trim()) { setError("状況を入力してください"); return; }
     setError("");
-    const count = getUsageCount();
-    if (!isPremium && count >= FREE_LIMIT) {
-      setError("無料の利用回数（3回）を超えました。プレミアムプランにアップグレードしてください。");
+    // ローカルでも簡易チェック（補助的）
+    const localCount = getUsageCount();
+    if (!isPremium && localCount >= FREE_LIMIT) {
+      setShowPaywall(true);
       return;
     }
     setLoading(true);
@@ -118,13 +122,27 @@ export default function PawaharaAI() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ situation, duration, position, evidence }),
       });
+      // APIが429を返した場合はペイウォール表示（シークレット窓対策）
+      if (res.status === 429) {
+        const data = await res.json().catch(() => ({}));
+        if (data.error === "LIMIT_REACHED") {
+          setShowPaywall(true);
+        } else {
+          setError("リクエストが多すぎます。しばらく待ってから再試行してください。");
+        }
+        setLoading(false);
+        return;
+      }
       if (!res.ok) throw new Error("生成に失敗しました");
       const data = await res.json();
       const parsed = parseResult(data.text);
       setResult(parsed);
       setActiveTab("法的評価");
-      const newCount = incrementUsage();
-      setUsageCount(newCount);
+      // サーバー側cookieカウントをlocalStorageに同期（正の値として扱う）
+      if (typeof data.count === "number") {
+        syncUsageCount(data.count);
+        setUsageCount(data.count);
+      }
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
     } catch {
       setError("生成中にエラーが発生しました。もう一度お試しください。");
@@ -145,9 +163,31 @@ export default function PawaharaAI() {
         <PayjpModal
           publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
           planLabel="プレミアムプラン ¥2,980/月 — 生成回数無制限"
-          onSuccess={() => { setShowPayjp(false); setIsPremium(true); }}
+          onSuccess={() => { setShowPayjp(false); setShowPaywall(false); setIsPremium(true); }}
           onClose={() => setShowPayjp(false)}
         />
+      )}
+      {showPaywall && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
+            <div className="text-3xl mb-3">🛡️</div>
+            <h2 className="text-lg font-bold mb-2">無料回数（3回）を使い切りました</h2>
+            <p className="text-sm text-gray-500 mb-4">プレミアムプランで対策書類を無制限に作成できます</p>
+            <ul className="text-xs text-gray-400 text-left mb-5 space-y-1">
+              <li>✅ 生成回数 無制限</li>
+              <li>✅ 全5タブの書類生成</li>
+              <li>✅ 内容証明・申告書ドラフト</li>
+              <li>✅ いつでもキャンセル可能</li>
+            </ul>
+            <button
+              onClick={() => { setShowPaywall(false); setShowPayjp(true); }}
+              className="block w-full bg-red-600 text-white font-bold py-3 rounded-xl hover:bg-red-700 mb-3"
+            >
+              ¥2,980/月で始める
+            </button>
+            <button onClick={() => setShowPaywall(false)} className="text-xs text-gray-400">閉じる</button>
+          </div>
+        </div>
       )}
       {/* Nav */}
       <nav className="border-b border-gray-100 px-6 py-4 sticky top-0 bg-white/95 backdrop-blur z-10">

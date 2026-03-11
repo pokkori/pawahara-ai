@@ -12,6 +12,7 @@ const DESC = "パワハラ・残業未払い・不当解雇の状況を入力す
 export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
+  icons: { icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" },
   openGraph: {
     title: TITLE,
     description: DESC,

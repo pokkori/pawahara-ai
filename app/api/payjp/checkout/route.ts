@@ -21,8 +21,14 @@ async function payjpPost(path: string, body: Record<string, string>) {
 }
 
 export async function POST(req: NextRequest) {
-  const { token } = await req.json();
+  const { token, plan } = await req.json();
   if (!token) return NextResponse.json({ error: "No token" }, { status: 400 });
+
+  // plan: "light" (¥980/月) or "standard" (¥2,980/月, default)
+  // 環境変数: PAYJP_PLAN_ID_LIGHT (ライトプラン) / PAYJP_PLAN_ID (スタンダードプラン)
+  const planId = plan === "light"
+    ? process.env.PAYJP_PLAN_ID_LIGHT!
+    : process.env.PAYJP_PLAN_ID!;
 
   try {
     // Create customer with card token
@@ -34,7 +40,7 @@ export async function POST(req: NextRequest) {
     // Create subscription
     const sub = await payjpPost("/subscriptions", {
       customer: customer.id,
-      plan: process.env.PAYJP_PLAN_ID!,
+      plan: planId,
     });
     if (sub.error) {
       return NextResponse.json({ error: sub.error.message }, { status: 400 });

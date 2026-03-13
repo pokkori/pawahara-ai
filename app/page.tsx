@@ -239,6 +239,7 @@ export default function PawaharaAI() {
   const [isPremium, setIsPremium] = useState(false);
   const [usageCount, setUsageCount] = useState(0);
   const [showPayjp, setShowPayjp] = useState(false);
+  const [payjpPlan, setPayjpPlan] = useState<"light" | "standard">("standard");
   const [showPaywall, setShowPaywall] = useState(false);
   const [sampleTab, setSampleTab] = useState<Tab>("法的評価");
   const resultRef = useRef<HTMLDivElement>(null);
@@ -260,7 +261,10 @@ export default function PawaharaAI() {
     setSituation((prev) => prev ? prev + "\n" + p : p);
   };
 
-  const startCheckout = () => setShowPaywall(true);
+  const startCheckout = (plan: "light" | "standard" = "standard") => {
+    setPayjpPlan(plan);
+    setShowPaywall(true);
+  };
 
   const handleGenerate = async () => {
     if (!situation.trim()) { setError("状況を入力してください"); return; }
@@ -319,7 +323,8 @@ export default function PawaharaAI() {
       {showPayjp && (
         <PayjpModal
           publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
-          planLabel="プレミアムプラン ¥2,980/月 — 生成回数無制限"
+          planLabel={payjpPlan === "light" ? "ライトプラン ¥980/月" : "スタンダードプラン ¥2,980/月"}
+          plan={payjpPlan}
           onSuccess={() => { setShowPayjp(false); setShowPaywall(false); setIsPremium(true); }}
           onClose={() => setShowPayjp(false)}
         />
@@ -330,18 +335,45 @@ export default function PawaharaAI() {
             <div className="text-3xl mb-3">🛡️</div>
             <h2 className="text-lg font-bold mb-2">状況は変わります。記録は続けてください。</h2>
             <p className="text-sm text-gray-500 mb-4">新たなパワハラが起きるたびに対策書類が必要です。証拠が増えるほど有利になります。</p>
-            <ul className="text-xs text-gray-400 text-left mb-5 space-y-1">
-              <li>✅ 生成回数 無制限</li>
-              <li>✅ 全5タブの書類生成</li>
-              <li>✅ 内容証明・申告書ドラフト</li>
-              <li>✅ いつでもキャンセル可能</li>
-            </ul>
-            <button
-              onClick={() => { setShowPaywall(false); setShowPayjp(true); }}
-              className="block w-full bg-red-600 text-white font-bold py-3 rounded-xl hover:bg-red-700 mb-3"
-            >
-              ¥2,980/月で始める
-            </button>
+            <div className="space-y-3 mb-4">
+              <div className="border border-gray-200 rounded-xl p-4 text-left">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-bold text-gray-900 text-sm">ライトプラン</span>
+                  <span className="text-red-600 font-bold">¥980/月</span>
+                </div>
+                <ul className="text-xs text-gray-500 space-y-0.5 mb-3">
+                  <li>✅ 法的評価（パワハラ該当判定）</li>
+                  <li>✅ 証拠収集ガイドライン</li>
+                  <li>✅ 月3回まで</li>
+                  <li className="text-gray-400">— 内容証明・申告書はなし</li>
+                </ul>
+                <button
+                  onClick={() => { setPayjpPlan("light"); setShowPaywall(false); setShowPayjp(true); }}
+                  className="w-full border border-red-400 text-red-600 font-bold py-2 rounded-lg hover:bg-red-50 text-sm"
+                >
+                  ライトプランで始める
+                </button>
+              </div>
+              <div className="border-2 border-red-600 rounded-xl p-4 text-left relative">
+                <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-red-600 text-white text-xs font-bold px-3 py-0.5 rounded-full">おすすめ</span>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-bold text-gray-900 text-sm">スタンダードプラン</span>
+                  <span className="text-red-600 font-bold">¥2,980/月</span>
+                </div>
+                <ul className="text-xs text-gray-500 space-y-0.5 mb-3">
+                  <li>✅ 全機能利用可能</li>
+                  <li>✅ 内容証明・労基署申告書</li>
+                  <li>✅ 選択肢マップ</li>
+                  <li>✅ 無制限利用</li>
+                </ul>
+                <button
+                  onClick={() => { setPayjpPlan("standard"); setShowPaywall(false); setShowPayjp(true); }}
+                  className="w-full bg-red-600 text-white font-bold py-2 rounded-lg hover:bg-red-700 text-sm"
+                >
+                  スタンダードで始める
+                </button>
+              </div>
+            </div>
             <button onClick={() => setShowPaywall(false)} className="text-xs text-gray-400">閉じる</button>
           </div>
         </div>
@@ -574,8 +606,8 @@ export default function PawaharaAI() {
             {!isPremium && (
               <div className="text-center">
                 <p className="text-xs text-gray-400 mb-2">残り無料回数: {Math.max(0, FREE_LIMIT - usageCount)}回</p>
-                <button onClick={startCheckout} className="text-sm text-red-600 underline hover:text-red-800">
-                  プレミアムプランで無制限に使う（¥2,980/月）→
+                <button onClick={() => startCheckout("standard")} className="text-sm text-red-600 underline hover:text-red-800">
+                  プランを選んで無制限に使う（¥980/月〜）→
                 </button>
               </div>
             )}
@@ -588,10 +620,10 @@ export default function PawaharaAI() {
               <div className="bg-red-50 border border-red-200 rounded-2xl p-5 flex flex-col sm:flex-row items-center gap-4">
                 <div className="flex-1 text-center sm:text-left">
                   <p className="font-bold text-red-800 text-sm mb-1">📄 内容証明文・労基署申告書を生成しますか？</p>
-                  <p className="text-xs text-red-700">プレミアムにアップグレードすると、書類を何度でも無制限に生成できます（¥2,980/月）</p>
+                  <p className="text-xs text-red-700">プランにアップグレードすると、書類を何度でも生成できます（¥980/月〜）</p>
                 </div>
                 <button
-                  onClick={startCheckout}
+                  onClick={() => startCheckout("standard")}
                   className="shrink-0 bg-red-600 text-white font-bold px-6 py-2.5 rounded-xl hover:bg-red-700 text-sm whitespace-nowrap"
                 >
                   今すぐアップグレード →
@@ -663,9 +695,9 @@ export default function PawaharaAI() {
 
       {/* Pricing */}
       <section className="bg-red-50 py-16">
-        <div className="max-w-2xl mx-auto px-6 text-center">
+        <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-8">料金プラン</h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-3 gap-5">
             <div className="bg-white rounded-2xl p-6 border border-gray-200">
               <div className="text-lg font-bold text-gray-900 mb-2">無料プラン</div>
               <div className="text-3xl font-bold text-gray-900 mb-4">¥0</div>
@@ -681,21 +713,38 @@ export default function PawaharaAI() {
                 無料で試す
               </button>
             </div>
+            <div className="bg-white rounded-2xl p-6 border border-red-300">
+              <div className="text-lg font-bold text-gray-900 mb-2">ライトプラン</div>
+              <div className="text-3xl font-bold text-red-600 mb-4">¥980<span className="text-lg font-normal text-gray-500">/月</span></div>
+              <ul className="text-sm text-gray-600 space-y-2 mb-6 text-left">
+                <li>✅ 法的評価（パワハラ該当判定）</li>
+                <li>✅ 証拠収集ガイドライン</li>
+                <li>✅ 月3回まで</li>
+                <li className="text-gray-400 text-xs">— 内容証明・申告書はなし</li>
+              </ul>
+              <button
+                onClick={() => startCheckout("light")}
+                className="w-full border border-red-600 text-red-600 font-bold py-3 rounded-xl hover:bg-red-50 transition-colors"
+              >
+                ライトプランで始める
+              </button>
+            </div>
             <div className="bg-red-600 rounded-2xl p-6 text-white relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full">おすすめ</div>
-              <div className="text-lg font-bold mb-2">プレミアムプラン</div>
+              <div className="text-lg font-bold mb-2">スタンダードプラン</div>
               <div className="text-3xl font-bold mb-4">¥2,980<span className="text-lg font-normal">/月</span></div>
               <ul className="text-sm space-y-2 mb-6 text-left">
-                <li>✅ 生成回数 無制限</li>
-                <li>✅ 全5タブの書類生成</li>
-                <li>✅ コピー機能</li>
+                <li>✅ 全機能利用可能</li>
+                <li>✅ 内容証明・申告書ドラフト</li>
+                <li>✅ 選択肢マップ</li>
+                <li>✅ 無制限利用</li>
                 <li>✅ いつでも解約可能</li>
               </ul>
               <button
-                onClick={startCheckout}
+                onClick={() => startCheckout("standard")}
                 className="w-full bg-white text-red-600 font-bold py-3 rounded-xl hover:bg-red-50 transition-colors"
               >
-                プレミアムにアップグレード
+                スタンダードにアップグレード
               </button>
             </div>
           </div>
@@ -706,7 +755,7 @@ export default function PawaharaAI() {
       {/* Footer */}
       <footer className="border-t border-gray-100 py-8 px-6">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-400">
-          <span>© 2025 パワハラ対策AI</span>
+          <span>© 2026 パワハラ対策AI</span>
           <div className="flex gap-6">
             <Link href="/legal" className="hover:text-gray-600">特定商取引法</Link>
             <Link href="/privacy" className="hover:text-gray-600">プライバシーポリシー</Link>

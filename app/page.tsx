@@ -202,41 +202,45 @@ export default function PawaharaAI() {
         </div>
       </nav>
 
+      {/* 免責バナー（目立つ位置） */}
+      <div className="bg-amber-50 border-b border-amber-200 px-6 py-3 text-center">
+        <p className="text-xs text-amber-800 font-medium">
+          ⚠️ <strong>本サービスは法的助言・弁護士業務ではありません。</strong>生成された書類は参考情報です。法的手続きには必ず弁護士・労働基準監督署にご相談ください。
+        </p>
+      </div>
+
       {/* Hero */}
       <section className="max-w-4xl mx-auto px-6 pt-16 pb-12 text-center">
         <div className="inline-block bg-red-50 text-red-700 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
-          🛡️ パワハラ対策AI — 弁護士費用ゼロで自分を守る
+          🛡️ パワハラ対策AI — 対策書類を15秒で作成
         </div>
         <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
-          あなたの状況は、<br />
-          <span className="text-red-600">法的にアウトです。</span>
+          パワハラ・残業未払い・不当解雇<br />
+          <span className="text-red-600">対策書類を自分で作る。</span>
         </h1>
         <p className="text-gray-600 text-lg mb-4">
-          パワハラ・残業未払い・不当解雇に悩んでいませんか？<br />
-          弁護士に頼むと着手金だけで<strong>30〜100万円</strong>。<br />
-          AIなら<strong>月¥2,980</strong>で対策書類を無制限に作成できます。
+          状況を入力するだけで、内容証明文・労基署申告書・証拠収集ガイドを<strong>30秒で生成</strong>。<br />
+          弁護士相談の前段階として、まず自分でできることを把握しましょう。
         </p>
-        <p className="text-sm text-gray-400 mb-6">※ 本サービスは法的助言ではありません。参考情報としてご活用ください。</p>
-        {/* Cialdini: 社会的証明 + 権威 */}
         <div className="flex flex-wrap justify-center gap-3 mb-6 text-sm">
           <div className="flex items-center gap-1.5 bg-red-50 border border-red-100 rounded-full px-4 py-2">
-            <span className="text-red-600 font-bold">3,200+</span>
-            <span className="text-gray-600">人が利用中</span>
+            <span className="text-red-600 font-bold">5種類</span>
+            <span className="text-gray-600">の対策書類を同時生成</span>
           </div>
           <div className="flex items-center gap-1.5 bg-red-50 border border-red-100 rounded-full px-4 py-2">
-            <span className="text-yellow-500">★★★★★</span>
-            <span className="text-gray-600">4.8 / 5.0</span>
+            <span className="text-red-600 font-bold">登録不要</span>
+            <span className="text-gray-600">すぐに使える</span>
           </div>
           <div className="flex items-center gap-1.5 bg-red-50 border border-red-100 rounded-full px-4 py-2">
-            <span className="text-red-600 font-bold">弁護士費用の1/500</span>
-            <span className="text-gray-600">で同等の対策書類</span>
+            <span className="text-red-600 font-bold">無料3回</span>
+            <span className="text-gray-600">まずお試しください</span>
           </div>
         </div>
         <button
           onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
           className="bg-red-600 text-white text-lg font-bold px-8 py-4 rounded-xl hover:bg-red-700 transition-colors shadow-lg"
         >
-          無料3回 — 今すぐ診断する
+          無料3回 — 今すぐ書類を作成する
         </button>
         <div className="flex justify-center gap-8 mt-10 text-sm text-gray-500">
           <span>✅ 登録不要</span>
@@ -383,7 +387,22 @@ export default function PawaharaAI() {
 
           {/* Results */}
           {result && (
-            <div ref={resultRef} className="mt-8 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div ref={resultRef} className="mt-8 space-y-4">
+            {!isPremium && (
+              <div className="bg-red-50 border border-red-200 rounded-2xl p-5 flex flex-col sm:flex-row items-center gap-4">
+                <div className="flex-1 text-center sm:text-left">
+                  <p className="font-bold text-red-800 text-sm mb-1">📄 内容証明文・労基署申告書を生成しますか？</p>
+                  <p className="text-xs text-red-700">プレミアムにアップグレードすると、書類を何度でも無制限に生成できます（¥2,980/月）</p>
+                </div>
+                <button
+                  onClick={startCheckout}
+                  className="shrink-0 bg-red-600 text-white font-bold px-6 py-2.5 rounded-xl hover:bg-red-700 text-sm whitespace-nowrap"
+                >
+                  今すぐアップグレード →
+                </button>
+              </div>
+            )}
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
               <div className="flex border-b border-gray-200 overflow-x-auto">
                 {TABS.map((tab) => (
                   <button
@@ -427,6 +446,7 @@ export default function PawaharaAI() {
                   {result[activeTab] || "（このタブの内容がありません）"}
                 </div>
               </div>
+            </div>
             </div>
           )}
         </div>

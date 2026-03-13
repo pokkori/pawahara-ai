@@ -762,6 +762,16 @@ export default function PawaharaAI() {
             <Link href="/privacy" className="hover:text-gray-600">プライバシーポリシー</Link>
           </div>
         </div>
+        <div className="max-w-5xl mx-auto border-t border-gray-100 pt-3 mt-4 text-xs text-center text-gray-400">
+          <p className="mb-1">ポッコリラボの他のサービス</p>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+            <a href="https://claim-ai-beryl.vercel.app" className="hover:text-gray-600">クレームAI</a>
+            <a href="https://hojyokin-ai-delta.vercel.app" className="hover:text-gray-600">補助金AI</a>
+            <a href="https://keiyakusho-ai.vercel.app" className="hover:text-gray-600">契約書AIレビュー</a>
+            <a href="https://rougo-sim-ai.vercel.app" className="hover:text-gray-600">老後シミュレーターAI</a>
+            <a href="https://ai-keiei-keikaku.vercel.app" className="hover:text-gray-600">AI経営計画書</a>
+          </div>
+        </div>
       </footer>
     </main>
   );

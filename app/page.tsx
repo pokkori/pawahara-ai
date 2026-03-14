@@ -753,6 +753,26 @@ export default function PawaharaAI() {
         </div>
       </section>
 
+      {/* Cross-sell: クレームAI */}
+      <section className="max-w-4xl mx-auto px-6 py-8">
+        <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6 flex items-center gap-5">
+          <div className="text-4xl shrink-0">⚡</div>
+          <div className="flex-1">
+            <p className="text-xs font-semibold text-orange-500 mb-1">一緒に使うと効果的</p>
+            <h3 className="font-bold text-gray-900 mb-1">クレームAI との併用で外部クレームにも即対応</h3>
+            <p className="text-sm text-gray-600">社内ハラスメント対策 + 顧客・取引先からのカスタマーハラスメント対応をワンセットで。中小企業のCS・HR担当者に最適。</p>
+          </div>
+          <a
+            href="https://claim-ai-beryl.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 bg-orange-500 text-white text-sm font-bold px-4 py-2 rounded-xl hover:bg-orange-600 transition-colors"
+          >
+            詳細を見る →
+          </a>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="border-t border-gray-100 py-8 px-6">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-400">

@@ -186,18 +186,40 @@ ${evidenceText}
 
   try {
     const client = getClient();
-    const message = await client.messages.create({
+    const newCount = cookieCount + 1;
+    const stream = client.messages.stream({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 5500,
       messages: [{ role: "user", content: prompt }],
     });
-    const text = message.content[0].type === "text" ? message.content[0].text : "";
-    const newCount = cookieCount + 1;
-    const res = NextResponse.json({ text, count: newCount });
+
+    const headers: Record<string, string> = {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Transfer-Encoding": "chunked",
+      "X-New-Count": String(newCount),
+    };
     if (!isPremium) {
-      res.cookies.set(COOKIE_KEY, String(newCount), { maxAge: 60 * 60 * 24 * 30, sameSite: "lax", httpOnly: true, secure: true });
+      headers["Set-Cookie"] = `${COOKIE_KEY}=${newCount}; Max-Age=${60 * 60 * 24 * 30}; Path=/; SameSite=Lax; HttpOnly; Secure`;
     }
-    return res;
+
+    const readableStream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of stream) {
+            if (chunk.type === "content_block_delta" && chunk.delta.type === "text_delta") {
+              controller.enqueue(new TextEncoder().encode(chunk.delta.text));
+            }
+          }
+        } catch (err) {
+          console.error(err);
+          controller.error(err);
+        } finally {
+          controller.close();
+        }
+      },
+    });
+
+    return new Response(readableStream, { headers });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "AI生成中にエラーが発生しました。" }, { status: 500 });

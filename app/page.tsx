@@ -295,16 +295,32 @@ export default function PawaharaAI() {
         return;
       }
       if (!res.ok) throw new Error("生成に失敗しました");
-      const data = await res.json();
-      const parsed = parseResult(data.text);
-      setResult(parsed);
-      setActiveTab("法的評価");
+      if (!res.body) throw new Error("レスポンスボディがありません");
+
       // サーバー側cookieカウントをlocalStorageに同期（正の値として扱う）
-      if (typeof data.count === "number") {
-        syncUsageCount(data.count);
-        setUsageCount(data.count);
+      const newCountHeader = res.headers.get("X-New-Count");
+      if (newCountHeader) {
+        const newCount = parseInt(newCountHeader, 10);
+        if (!isNaN(newCount)) {
+          syncUsageCount(newCount);
+          setUsageCount(newCount);
+        }
       }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let fullText = "";
+      setResult(parseResult(""));
+      setActiveTab("法的評価");
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        fullText += decoder.decode(value, { stream: true });
+        setResult(parseResult(fullText));
+      }
+      setResult(parseResult(fullText));
     } catch {
       setError("生成中にエラーが発生しました。もう一度お試しください。");
     } finally {

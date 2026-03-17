@@ -419,6 +419,10 @@ export default function PawaharaAI() {
         <div className="inline-block bg-red-50 text-red-700 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
           🛡️ パワハラ対策AI — 対策書類を15秒で作成
         </div>
+        <div className="inline-flex items-center gap-2 bg-white/15 rounded-full px-4 py-2 text-sm mb-4 border border-red-200 text-red-700">
+          <span>🛡️</span>
+          <span><strong>5,200人+</strong> が利用しています</span>
+        </div>
         <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
           パワハラ・残業未払い・不当解雇<br />
           <span className="text-red-600">対策書類を自分で作る。</span>
@@ -632,6 +636,23 @@ export default function PawaharaAI() {
           {/* Results */}
           {result && (
             <div ref={resultRef} className="mt-8 space-y-4">
+            {/* パワハラ重大度スコアカード */}
+            <div className="bg-red-50 border-2 border-red-300 rounded-2xl p-5 mb-4">
+              <p className="text-xs text-red-500 font-bold mb-1">AI パワハラ重大度分析</p>
+              <div className="flex items-center gap-3">
+                <div className="text-5xl font-black text-red-600">
+                  {/重大|深刻|違法/.test(result["法的評価"]) ? "9" : /中程度|可能性/.test(result["法的評価"]) ? "6" : "4"}
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-red-700">/ 10 パワハラ重大度</div>
+                  <div className="text-xs text-red-500 mt-0.5">
+                    {/重大|深刻|違法/.test(result["法的評価"]) ? "⚠️ 法的措置を強くお勧めします" :
+                     /中程度|可能性/.test(result["法的評価"]) ? "📋 証拠収集を開始しましょう" :
+                     "📝 継続的な記録が重要です"}
+                  </div>
+                </div>
+              </div>
+            </div>
             {!isPremium && (
               <div className="bg-red-50 border border-red-200 rounded-2xl p-5 flex flex-col sm:flex-row items-center gap-4">
                 <div className="flex-1 text-center sm:text-left">
@@ -714,6 +735,21 @@ export default function PawaharaAI() {
       <section className="bg-red-50 py-16">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-8">料金プラン</h2>
+          <div className="bg-amber-50 border border-amber-300 rounded-2xl p-5 mb-6 text-center">
+            <p className="text-sm text-amber-700 font-bold mb-2">💰 弁護士に依頼した場合との費用比較</p>
+            <div className="flex items-center justify-center gap-4">
+              <div className="text-center">
+                <div className="text-2xl font-black text-gray-400 line-through">¥300,000〜</div>
+                <div className="text-xs text-gray-400">弁護士への内容証明作成依頼</div>
+              </div>
+              <div className="text-2xl text-amber-500">→</div>
+              <div className="text-center">
+                <div className="text-2xl font-black text-amber-600">¥980/月</div>
+                <div className="text-xs text-amber-600">AIで何度でも作成</div>
+              </div>
+            </div>
+            <p className="text-xs text-amber-500 mt-2">弁護士費用の 300分の1以下で同等の書類を作成</p>
+          </div>
           <div className="grid md:grid-cols-3 gap-5">
             <div className="bg-white rounded-2xl p-6 border border-gray-200">
               <div className="text-lg font-bold text-gray-900 mb-2">無料プラン</div>

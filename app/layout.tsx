@@ -20,12 +20,14 @@ export const metadata: Metadata = {
     siteName: "パワハラ対策AI",
     locale: "ja_JP",
     type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "パワハラ対策AI" }],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESC,
     site: "@levona_design",
+    images: ["/og.png"],
   },
   metadataBase: new URL(SITE_URL),
 };

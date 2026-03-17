@@ -502,6 +502,38 @@ export default function PawaharaAI() {
         </div>
       </section>
 
+      {/* ペルソナ共感セクション */}
+      <section className="py-14 bg-white">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="text-2xl font-bold text-center mb-2 text-gray-900">こんな状況で困っていませんか？</h2>
+          <p className="text-center text-gray-400 text-sm mb-8">職場のハラスメントに悩む方からよく聞く声です</p>
+          <div className="space-y-3">
+            {[
+              "「パワハラを受けているが、これが法的にパワハラに該当するか自分では判断できない」",
+              "「弁護士に相談したいが、着手金20〜50万円がかかると聞いて躊躇している」",
+              "「証拠を集めたいが、何を・どうやって・どこに保存すればいいかわからない」",
+              "「内容証明を送りたいが、書き方がわからないし間違えたら逆に不利になりそうで怖い」",
+              "「会社に訴えたいが、報復されるのが怖い。どこに相談すれば安全かわからない」",
+            ].map((v, i) => (
+              <div key={i} className="flex items-start gap-3 bg-red-50 border border-red-100 rounded-xl px-5 py-4">
+                <span className="text-red-400 font-bold text-lg mt-0.5 shrink-0">✗</span>
+                <p className="text-sm text-gray-700 leading-relaxed">{v}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+            <p className="text-red-800 font-bold text-base mb-2">パワハラ対策AIが、これら全てを解決します</p>
+            <p className="text-sm text-red-700">状況・期間・加害者の役職を入力するだけで、法的評価・内容証明・証拠収集GLが30秒で出力されます。</p>
+            <button
+              onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
+              className="inline-block mt-4 bg-red-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-red-700 transition-colors text-sm"
+            >
+              無料で書類を作成する（3回・登録不要）→
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-5xl mx-auto px-6">

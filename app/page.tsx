@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import PayjpModal from "@/components/PayjpModal";
+import { track } from '@vercel/analytics';
 
 const FREE_LIMIT = 3;
 const TABS = ["法的評価", "証拠収集GL", "内容証明文", "申告書", "選択肢マップ"] as const;
@@ -307,9 +308,11 @@ export default function PawaharaAI() {
     // ローカルでも簡易チェック（補助的）
     const localCount = getUsageCount();
     if (!isPremium && localCount >= FREE_LIMIT) {
+      track('paywall_shown', { service: 'パワハラ対策AI' });
       setShowPaywall(true);
       return;
     }
+    track('ai_generated', { service: 'パワハラ対策AI' });
     setLoading(true);
     setResult(null);
     try {
@@ -322,6 +325,7 @@ export default function PawaharaAI() {
       if (res.status === 429) {
         const data = await res.json().catch(() => ({}));
         if (data.error === "LIMIT_REACHED") {
+          track('paywall_shown', { service: 'パワハラ対策AI' });
           setShowPaywall(true);
         } else {
           setError("リクエストが多すぎます。しばらく待ってから再試行してください。");
@@ -399,7 +403,7 @@ export default function PawaharaAI() {
                   <li className="text-gray-400">— 内容証明・申告書はなし</li>
                 </ul>
                 <button
-                  onClick={() => { setPayjpPlan("light"); setShowPaywall(false); setShowPayjp(true); }}
+                  onClick={() => { track('upgrade_click', { service: 'パワハラ対策AI', plan: 'light' }); setPayjpPlan("light"); setShowPaywall(false); setShowPayjp(true); }}
                   className="w-full border border-red-400 text-red-600 font-bold py-2 rounded-lg hover:bg-red-50 text-sm"
                 >
                   ライトプランで始める
@@ -418,7 +422,7 @@ export default function PawaharaAI() {
                   <li>✅ 無制限利用</li>
                 </ul>
                 <button
-                  onClick={() => { setPayjpPlan("standard"); setShowPaywall(false); setShowPayjp(true); }}
+                  onClick={() => { track('upgrade_click', { service: 'パワハラ対策AI', plan: 'standard' }); setPayjpPlan("standard"); setShowPaywall(false); setShowPayjp(true); }}
                   className="w-full bg-red-600 text-white font-bold py-2 rounded-lg hover:bg-red-700 text-sm"
                 >
                   スタンダードで始める

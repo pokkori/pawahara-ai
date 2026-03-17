@@ -416,12 +416,16 @@ export default function PawaharaAI() {
       </div>
 
       {/* Hero */}
-      <section className="max-w-4xl mx-auto px-6 pt-16 pb-12 text-center">
-        <div className="inline-block bg-red-50 text-red-700 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-red-50 via-rose-50 to-orange-50 pointer-events-none" />
+        <div className="relative max-w-4xl mx-auto px-6 pt-16 pb-12 text-center">
+        <div className="inline-block bg-red-50 text-red-700 text-sm font-medium px-4 py-1.5 rounded-full mb-6 border border-red-100">
           🛡️ パワハラ対策AI — 対策書類を15秒で作成
         </div>
-        <div className="inline-flex items-center gap-2 bg-white/15 rounded-full px-4 py-2 text-sm mb-4 border border-red-200 text-red-700">
-          <span>🛡️</span>
+        <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-2 text-sm mb-4 border border-red-200 text-red-700 shadow-sm">
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-400">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+          </span>
           <span><strong>5,200人+</strong> が利用しています</span>
         </div>
         <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
@@ -456,6 +460,7 @@ export default function PawaharaAI() {
           <span>✅ 登録不要</span>
           <span>✅ 無料3回</span>
           <span>✅ 30秒で生成</span>
+        </div>
         </div>
       </section>
 
@@ -766,7 +771,7 @@ export default function PawaharaAI() {
                 <div className="flex justify-end gap-2 mb-4">
                   <a
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                      "パワハラ対策AIに相談したら具体的なアドバイスがもらえた。職場でつらい思いをしている方へ。 #パワハラ対策 #労働問題 #AI相談"
+                      `パワハラ重大度${/重大|深刻|違法/.test(result["法的評価"]) ? "9" : /中程度|可能性/.test(result["法的評価"]) ? "6" : "4"}/10 — パワハラ対策AIで書類を即生成！職場でつらい思いをしている方へ。 #パワハラ対策 #労働問題 #AI相談`
                     )}&url=${encodeURIComponent("https://pawahara-ai.vercel.app")}`}
                     target="_blank"
                     rel="noopener noreferrer"

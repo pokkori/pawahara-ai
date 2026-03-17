@@ -206,6 +206,39 @@ const VOICES = [
   { role: "会社員・20代男性", text: "退職強要をされていて、弁護士に相談しようにも費用が怖くて。内容証明文を送ったら会社側が折れました。弁護士費用ゼロで解決できました。" },
 ];
 
+function renderMarkdown(text: string) {
+  const lines = text.split('\n');
+  const result: string[] = [];
+  let inList = false;
+
+  for (const line of lines) {
+    if (/^## (.+)$/.test(line)) {
+      if (inList) { result.push('</ul>'); inList = false; }
+      result.push(line.replace(/^## (.+)$/, '<h3 class="font-bold text-base mt-4 mb-2 text-red-700 border-b border-red-200 pb-1">$1</h3>'));
+    } else if (/^# (.+)$/.test(line)) {
+      if (inList) { result.push('</ul>'); inList = false; }
+      result.push(line.replace(/^# (.+)$/, '<h2 class="font-bold text-lg mt-4 mb-2 text-red-800">$1</h2>'));
+    } else if (/^- (.+)$/.test(line)) {
+      if (!inList) { result.push('<ul class="space-y-1 mb-2">'); inList = true; }
+      const inner = line.replace(/^- /, '').replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>');
+      result.push(`<li class="ml-4 list-disc text-gray-700 text-sm">${inner}</li>`);
+    } else if (/^[①②③④⑤⑥⑦⑧⑨⑩]/.test(line)) {
+      if (!inList) { result.push('<ul class="space-y-1 mb-2">'); inList = true; }
+      const inner = line.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>');
+      result.push(`<li class="ml-4 list-disc text-gray-700 text-sm">${inner}</li>`);
+    } else if (line.trim() === '') {
+      if (inList) { result.push('</ul>'); inList = false; }
+      result.push('<div class="mt-2"></div>');
+    } else {
+      if (inList) { result.push('</ul>'); inList = false; }
+      const inner = line.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>');
+      result.push(`<p class="text-gray-700 text-sm leading-relaxed">${inner}</p>`);
+    }
+  }
+  if (inList) result.push('</ul>');
+  return result.join('\n');
+}
+
 function parseResult(text: string): Record<Tab, string> {
   const result: Partial<Record<Tab, string>> = {};
   for (const tab of TABS) {
@@ -243,6 +276,7 @@ export default function PawaharaAI() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [sampleTab, setSampleTab] = useState<Tab>("法的評価");
   const [severity, setSeverity] = useState(3);
+  const [showDetails, setShowDetails] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -803,8 +837,8 @@ export default function PawaharaAI() {
                 <div className="flex justify-end gap-2 mb-4">
                   <a
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                      `パワハラ重大度${/重大|深刻|違法/.test(result["法的評価"]) ? "9" : /中程度|可能性/.test(result["法的評価"]) ? "6" : "4"}/10 — パワハラ対策AIで書類を即生成！職場でつらい思いをしている方へ。 #パワハラ対策 #労働問題 #AI相談`
-                    )}&url=${encodeURIComponent("https://pawahara-ai.vercel.app")}`}
+                      `「パワハラ重大度${/重大|深刻|違法/.test(result["法的評価"]) ? "9" : /中程度|可能性/.test(result["法的評価"]) ? "6" : "4"}/10... これ職場に当てはまりすぎて怖い😅 対応策もAIが全部出してくれた → https://pawahara-ai.vercel.app #パワハラ対策 #労働問題 #AI相談`
+                    )}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-white bg-sky-500 rounded-lg px-4 py-2 hover:bg-sky-600 transition-colors"
@@ -818,9 +852,10 @@ export default function PawaharaAI() {
                     📋 コピー
                   </button>
                 </div>
-                <div className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
-                  {result[activeTab] || "（このタブの内容がありません）"}
-                </div>
+                {result[activeTab]
+                  ? <div className="text-sm" dangerouslySetInnerHTML={{ __html: renderMarkdown(result[activeTab]) }} />
+                  : <p className="text-sm text-gray-400">（このタブの内容がありません）</p>
+                }
               </div>
             </div>
             </div>

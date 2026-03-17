@@ -665,102 +665,125 @@ export default function PawaharaAI() {
               </div>
             </div>
 
-            {/* 状況 */}
+            {/* 状況（必須・1フィールドで即生成可能） */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">状況の詳細 *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                状況を1行で教えてください <span className="text-red-500">*</span>
+              </label>
               <textarea
                 value={situation}
                 onChange={(e) => setSituation(e.target.value)}
-                placeholder="例: 上司から毎日怒鳴られ、「お前は使えない」「クビにするぞ」と言われ続けています。他の社員の前で怒鳴られることもあります。3ヶ月前から続いており、睡眠が取れない状態です。"
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm h-32 resize-none focus:outline-none focus:ring-2 focus:ring-red-400"
+                placeholder="例：上司から毎日怒鳴られ、業務外の作業を強要されています"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm h-28 resize-none focus:outline-none focus:ring-2 focus:ring-red-400"
               />
+              <p className="text-xs text-gray-400 mt-1">これだけで診断できます。より詳しい情報は下の「詳細情報」から任意で追加できます。</p>
             </div>
 
-            {/* 期間 */}
+            {/* 詳細情報（折りたたみ・任意） */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">期間・頻度</label>
-              <input
-                type="text"
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
-                placeholder="例: 約3ヶ月間、ほぼ毎日"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
-              />
-            </div>
+              <button
+                type="button"
+                onClick={() => setShowDetails(!showDetails)}
+                className="flex items-center gap-2 text-sm font-medium text-red-700 hover:text-red-900 transition-colors"
+              >
+                <span>{showDetails ? "▼" : "▶"}</span>
+                {showDetails ? "詳細情報を非表示" : "より正確な診断のために詳細を入力（任意）"}
+              </button>
 
-            {/* 加害者の役職 */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">加害者の役職</label>
-              <div className="flex flex-wrap gap-2">
-                {POSITION_OPTIONS.map((p) => (
-                  <button
-                    key={p}
-                    onClick={() => setPosition(p)}
-                    className={`text-sm px-4 py-2 rounded-lg border transition-colors ${
-                      position === p
-                        ? "bg-red-600 text-white border-red-600"
-                        : "bg-white text-gray-700 border-gray-300 hover:border-red-400"
-                    }`}
-                  >
-                    {p}
-                  </button>
-                ))}
-              </div>
-            </div>
+              {showDetails && (
+                <div className="mt-4 space-y-5 border border-red-100 rounded-xl p-5 bg-red-50/30">
+                  <p className="text-xs text-gray-500">以下の情報を追加すると、より精度の高い書類が生成されます。</p>
 
-            {/* 証拠 */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">証拠・記録の状況（複数選択可）</label>
-              <div className="flex flex-wrap gap-2">
-                {EVIDENCE_OPTIONS.map((e) => (
-                  <button
-                    key={e}
-                    onClick={() => toggleEvidence(e)}
-                    className={`text-sm px-4 py-2 rounded-lg border transition-colors ${
-                      evidence.includes(e)
-                        ? "bg-red-600 text-white border-red-600"
-                        : "bg-white text-gray-700 border-gray-300 hover:border-red-400"
-                    }`}
-                  >
-                    {e}
-                  </button>
-                ))}
-              </div>
-            </div>
+                  {/* 期間 */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">期間・頻度（任意）</label>
+                    <input
+                      type="text"
+                      value={duration}
+                      onChange={(e) => setDuration(e.target.value)}
+                      placeholder="例: 約3ヶ月間、ほぼ毎日"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
+                    />
+                  </div>
 
-            {/* 深刻度チェック */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                深刻度チェック
-                <span className="ml-2 text-xs text-gray-400">（あなた自身の感覚で選んでください）</span>
-              </label>
-              <div className="bg-red-50 rounded-xl p-4 border border-red-100">
-                <input
-                  type="range"
-                  min={1}
-                  max={5}
-                  step={1}
-                  value={severity}
-                  onChange={(e) => setSeverity(Number(e.target.value))}
-                  className="w-full accent-red-600 cursor-pointer"
-                />
-                <div className="flex justify-between text-xs text-gray-500 mt-1 px-0.5">
-                  <span>1<br/>軽微</span>
-                  <span className="text-center">2<br/>気になる</span>
-                  <span className="text-center">3<br/>つらい</span>
-                  <span className="text-center">4<br/>深刻</span>
-                  <span className="text-right">5<br/>限界</span>
+                  {/* 加害者の役職 */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">加害者の役職（任意）</label>
+                    <div className="flex flex-wrap gap-2">
+                      {POSITION_OPTIONS.map((p) => (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => setPosition(p)}
+                          className={`text-sm px-4 py-2 rounded-lg border transition-colors ${
+                            position === p
+                              ? "bg-red-600 text-white border-red-600"
+                              : "bg-white text-gray-700 border-gray-300 hover:border-red-400"
+                          }`}
+                        >
+                          {p}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 証拠 */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">証拠・記録の状況（任意・複数選択可）</label>
+                    <div className="flex flex-wrap gap-2">
+                      {EVIDENCE_OPTIONS.map((e) => (
+                        <button
+                          key={e}
+                          type="button"
+                          onClick={() => toggleEvidence(e)}
+                          className={`text-sm px-4 py-2 rounded-lg border transition-colors ${
+                            evidence.includes(e)
+                              ? "bg-red-600 text-white border-red-600"
+                              : "bg-white text-gray-700 border-gray-300 hover:border-red-400"
+                          }`}
+                        >
+                          {e}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 深刻度チェック */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      深刻度チェック（任意）
+                      <span className="ml-2 text-xs text-gray-400">（あなた自身の感覚で選んでください）</span>
+                    </label>
+                    <div className="bg-white rounded-xl p-4 border border-red-100">
+                      <input
+                        type="range"
+                        min={1}
+                        max={5}
+                        step={1}
+                        value={severity}
+                        onChange={(e) => setSeverity(Number(e.target.value))}
+                        className="w-full accent-red-600 cursor-pointer"
+                      />
+                      <div className="flex justify-between text-xs text-gray-500 mt-1 px-0.5">
+                        <span>1<br/>軽微</span>
+                        <span className="text-center">2<br/>気になる</span>
+                        <span className="text-center">3<br/>つらい</span>
+                        <span className="text-center">4<br/>深刻</span>
+                        <span className="text-right">5<br/>限界</span>
+                      </div>
+                      <div className="mt-3 text-center">
+                        <span className="inline-block bg-red-50 border border-red-300 text-red-700 font-bold text-sm px-4 py-1.5 rounded-full shadow-sm">
+                          {severity === 1 && "レベル1 — まず状況を記録・整理しましょう"}
+                          {severity === 2 && "レベル2 — 証拠収集を今すぐ始めましょう"}
+                          {severity === 3 && "レベル3 — 内容証明の準備を検討してください"}
+                          {severity === 4 && "レベル4 — 労基署への相談を強くお勧めします"}
+                          {severity === 5 && "レベル5 — 今すぐ弁護士・法テラスに連絡してください"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-3 text-center">
-                  <span className="inline-block bg-white border border-red-300 text-red-700 font-bold text-sm px-4 py-1.5 rounded-full shadow-sm">
-                    {severity === 1 && "レベル1 — まず状況を記録・整理しましょう"}
-                    {severity === 2 && "レベル2 — 証拠収集を今すぐ始めましょう"}
-                    {severity === 3 && "レベル3 — 内容証明の準備を検討してください"}
-                    {severity === 4 && "レベル4 — 労基署への相談を強くお勧めします"}
-                    {severity === 5 && "レベル5 — 今すぐ弁護士・法テラスに連絡してください"}
-                  </span>
-                </div>
-              </div>
+              )}
             </div>
 
             {error && <div className="text-red-600 text-sm bg-red-50 rounded-lg px-4 py-3">{error}</div>}
@@ -770,7 +793,7 @@ export default function PawaharaAI() {
               disabled={loading}
               className="w-full bg-red-600 text-white font-bold py-4 rounded-xl hover:bg-red-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed text-lg"
             >
-              {loading ? "🔄 生成中（30秒ほどかかります）..." : "🛡️ 対策書類を生成する（無料）"}
+              {loading ? "🔄 生成中（30秒ほどかかります）..." : "🛡️ 診断開始（無料）"}
             </button>
 
             {!isPremium && (

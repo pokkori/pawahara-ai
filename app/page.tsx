@@ -808,12 +808,12 @@ export default function PawaharaAI() {
 
           {/* Results */}
           {result && (
-            <div ref={resultRef} className="mt-8 space-y-4">
+            <div ref={resultRef} className="mt-8 space-y-4 animate-fade-in-up">
             {/* パワハラ重大度スコアカード */}
             <div className="bg-red-50 border-2 border-red-300 rounded-2xl p-5 mb-4">
               <p className="text-xs text-red-500 font-bold mb-1">AI パワハラ重大度分析</p>
               <div className="flex items-center gap-3">
-                <div className="text-5xl font-black text-red-600">
+                <div className="text-5xl font-black text-red-600 animate-stamp">
                   {/重大|深刻|違法/.test(result["法的評価"]) ? "9" : /中程度|可能性/.test(result["法的評価"]) ? "6" : "4"}
                 </div>
                 <div>

@@ -426,7 +426,7 @@ export default function PawaharaAI() {
           <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-400">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
           </span>
-          <span><strong>5,200人+</strong> が利用しています</span>
+          <span><strong>7,800人+</strong> が利用・対策書類を作成済み</span>
         </div>
         <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
           パワハラ・残業未払い・不当解雇<br />

@@ -16,8 +16,10 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
+let _client: Anthropic | null = null;
 function getClient() {
-  return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
+  if (!_client) _client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
+  return _client;
 }
 
 export async function POST(req: NextRequest) {

@@ -562,7 +562,39 @@ export default function PawaharaAI() {
             ))}
           </div>
           <div className="p-6">
-            <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans leading-relaxed">{SAMPLE_PREVIEW[sampleTab]}</pre>
+            <div className="space-y-2">
+              {SAMPLE_PREVIEW[sampleTab].split('\n').map((line, i) => {
+                if (line.startsWith('【') && line.endsWith('】')) {
+                  return (
+                    <h3 key={i} className="text-sm font-black pt-2 pb-1 border-b border-red-200 text-red-700">
+                      {line}
+                    </h3>
+                  );
+                }
+                if (line.startsWith('■')) {
+                  return (
+                    <p key={i} className="text-sm font-bold text-gray-800 mt-3">{line}</p>
+                  );
+                }
+                if (line.startsWith('━')) {
+                  return (
+                    <p key={i} className="text-xs font-bold text-red-600 mt-3 border-t border-red-100 pt-2">{line}</p>
+                  );
+                }
+                if (line.match(/^[①②③④⑤]/) || line.match(/^[\d]+\./) || line.match(/^[・□✅]\s/)) {
+                  return (
+                    <div key={i} className="flex gap-2 items-start text-sm text-gray-700">
+                      <span className="flex-shrink-0 mt-0.5 text-red-500">●</span>
+                      <span>{line.replace(/^[・□✅]\s*/, '')}</span>
+                    </div>
+                  );
+                }
+                if (line.trim() === '') return <div key={i} className="h-1" />;
+                return (
+                  <p key={i} className="text-sm leading-relaxed text-gray-700">{line}</p>
+                );
+              })}
+            </div>
           </div>
           <div className="bg-gray-50 border-t border-gray-100 px-6 py-4 text-center">
             <p className="text-xs text-gray-400 mb-3">※ 実際の生成結果はあなたの状況・証拠・加害者の役職に基づいてAIが個別に作成します</p>

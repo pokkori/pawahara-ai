@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
   try { body = await req.json(); }
   catch { return NextResponse.json({ error: "リクエストの形式が正しくありません" }, { status: 400 }); }
 
-  const { situation, duration, position, evidence } = body as Record<string, string | string[]>;
+  const { situation, duration, position, evidence, severity } = body as Record<string, string | string[]>;
   if (!situation || String(situation).trim() === "") {
     return NextResponse.json({ error: "状況を入力してください" }, { status: 400 });
   }
@@ -47,6 +47,8 @@ export async function POST(req: NextRequest) {
   const evidenceText = Array.isArray(evidence) && evidence.length ? evidence.join("、") : "特になし";
   const durationText = duration ? String(duration).trim() : "不明";
   const positionText = position ? String(position).trim() : "不明";
+  const severityNum = Number(severity) || 3;
+  const severityLabel = ["", "軽微（記録・整理段階）", "気になる（証拠収集推奨）", "つらい（内容証明を検討）", "深刻（労基署相談を強く推奨）", "限界（今すぐ弁護士・法テラスへ）"][severityNum] || "不明";
 
   const prompt = `あなたは労働問題・ハラスメント対策の専門家AIです。社会保険労務士・弁護士との連携実績を持ち、パワハラ防止法（労働施策総合推進法）・労働基準法・労働契約法・民事上の不法行為法理に精通しています。
 相談者が一人で抱え込まず、正しい手順で問題を解決できるよう、具体的かつ実践的な対策書類を生成してください。
@@ -63,6 +65,9 @@ ${positionText}
 
 【証拠・記録の状況】
 ${evidenceText}
+
+【深刻度（本人申告）】
+レベル${severityNum}/5 — ${severityLabel}
 
 ---
 以下の形式で出力してください（各セクションは必ず ===TAG=== で区切ること）:
@@ -190,7 +195,7 @@ ${evidenceText}
     const client = getClient();
     const newCount = cookieCount + 1;
     const stream = client.messages.stream({
-      model: "claude-haiku-4-5-20251001",
+      model: "claude-sonnet-4-6",
       max_tokens: 5500,
       messages: [{ role: "user", content: prompt }],
     });

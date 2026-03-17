@@ -282,7 +282,7 @@ export default function PawaharaAI() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ situation, duration, position, evidence }),
+        body: JSON.stringify({ situation, duration, position, evidence, severity }),
       });
       // APIが429を返した場合はペイウォール表示（シークレット窓対策）
       if (res.status === 429) {

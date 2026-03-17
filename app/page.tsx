@@ -242,6 +242,7 @@ export default function PawaharaAI() {
   const [payjpPlan, setPayjpPlan] = useState<"light" | "standard">("standard");
   const [showPaywall, setShowPaywall] = useState(false);
   const [sampleTab, setSampleTab] = useState<Tab>("法的評価");
+  const [severity, setSeverity] = useState(3);
   const resultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -474,6 +475,49 @@ export default function PawaharaAI() {
         </div>
       </section>
 
+      {/* 弁護士 vs AI 比較表 */}
+      <section className="max-w-4xl mx-auto px-6 py-16">
+        <div className="text-center mb-8">
+          <div className="inline-block bg-red-50 text-red-700 text-xs font-bold px-3 py-1 rounded-full mb-3 border border-red-200">費用・手間を比較</div>
+          <h2 className="text-2xl font-bold text-gray-900">弁護士 vs パワハラ対策AI</h2>
+          <p className="text-gray-500 text-sm mt-2">まず自分でできることを把握してから、必要に応じて弁護士へ</p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="text-left px-5 py-3 font-bold text-gray-700 rounded-tl-xl border border-gray-200">項目</th>
+                <th className="text-center px-5 py-3 font-bold text-gray-500 border border-gray-200">弁護士</th>
+                <th className="text-center px-5 py-3 font-bold text-red-600 bg-red-50 rounded-tr-xl border border-red-200">パワハラ対策AI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-100">
+                <td className="px-5 py-3 text-gray-700 border border-gray-200">初回相談料</td>
+                <td className="px-5 py-3 text-center text-gray-500 border border-gray-200">¥5,000〜¥10,000</td>
+                <td className="px-5 py-3 text-center font-bold text-red-600 bg-red-50 border border-red-100">無料</td>
+              </tr>
+              <tr className="border-b border-gray-100 bg-gray-50">
+                <td className="px-5 py-3 text-gray-700 border border-gray-200">対応時間</td>
+                <td className="px-5 py-3 text-center text-gray-500 border border-gray-200">平日昼のみ</td>
+                <td className="px-5 py-3 text-center font-bold text-red-600 bg-red-50 border border-red-100">24時間365日</td>
+              </tr>
+              <tr className="border-b border-gray-100">
+                <td className="px-5 py-3 text-gray-700 border border-gray-200">証拠集めアドバイス</td>
+                <td className="px-5 py-3 text-center text-gray-500 border border-gray-200">○</td>
+                <td className="px-5 py-3 text-center font-bold text-red-600 bg-red-50 border border-red-100">○</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-5 py-3 text-gray-700 border border-gray-200 rounded-bl-xl">法的手続き代理</td>
+                <td className="px-5 py-3 text-center text-gray-500 border border-gray-200">○</td>
+                <td className="px-5 py-3 text-center text-gray-500 bg-red-50 border border-red-100 rounded-br-xl">✗（提携弁護士紹介）</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-gray-400 text-center mt-4">※ まずAIで状況整理・書類準備 → 深刻なケースは弁護士へ（法テラス: 0570-078374）</p>
+      </section>
+
       {/* How To */}
       <section className="max-w-4xl mx-auto px-6 py-16">
         <h2 className="text-2xl font-bold text-center text-gray-900 mb-10">使い方は3ステップ</h2>
@@ -613,6 +657,41 @@ export default function PawaharaAI() {
               </div>
             </div>
 
+            {/* 深刻度チェック */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                深刻度チェック
+                <span className="ml-2 text-xs text-gray-400">（あなた自身の感覚で選んでください）</span>
+              </label>
+              <div className="bg-red-50 rounded-xl p-4 border border-red-100">
+                <input
+                  type="range"
+                  min={1}
+                  max={5}
+                  step={1}
+                  value={severity}
+                  onChange={(e) => setSeverity(Number(e.target.value))}
+                  className="w-full accent-red-600 cursor-pointer"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1 px-0.5">
+                  <span>1<br/>軽微</span>
+                  <span className="text-center">2<br/>気になる</span>
+                  <span className="text-center">3<br/>つらい</span>
+                  <span className="text-center">4<br/>深刻</span>
+                  <span className="text-right">5<br/>限界</span>
+                </div>
+                <div className="mt-3 text-center">
+                  <span className="inline-block bg-white border border-red-300 text-red-700 font-bold text-sm px-4 py-1.5 rounded-full shadow-sm">
+                    {severity === 1 && "レベル1 — まず状況を記録・整理しましょう"}
+                    {severity === 2 && "レベル2 — 証拠収集を今すぐ始めましょう"}
+                    {severity === 3 && "レベル3 — 内容証明の準備を検討してください"}
+                    {severity === 4 && "レベル4 — 労基署への相談を強くお勧めします"}
+                    {severity === 5 && "レベル5 — 今すぐ弁護士・法テラスに連絡してください"}
+                  </span>
+                </div>
+              </div>
+            </div>
+
             {error && <div className="text-red-600 text-sm bg-red-50 rounded-lg px-4 py-3">{error}</div>}
 
             <button
@@ -685,21 +764,16 @@ export default function PawaharaAI() {
               </div>
               <div className="p-6">
                 <div className="flex justify-end gap-2 mb-4">
-                  {activeTab === "法的評価" && result?.["法的評価"] && (
-                    <a
-                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                        "AIがパワハラ診断をしました 🛡️\n\n" +
-                        result["法的評価"].slice(0, 100) + "...\n\n" +
-                        "同じ状況で悩んでいる人に届けたい👇\n" +
-                        "#パワハラ対策AI #ブラック企業対策 #労働問題"
-                      )}&url=${encodeURIComponent("https://pawahara-ai.vercel.app")}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-white bg-black rounded-lg px-4 py-2 hover:bg-gray-800 transition-colors"
-                    >
-                      𝕏 シェア
-                    </a>
-                  )}
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                      "パワハラ対策AIに相談したら具体的なアドバイスがもらえた。職場でつらい思いをしている方へ。 #パワハラ対策 #労働問題 #AI相談"
+                    )}&url=${encodeURIComponent("https://pawahara-ai.vercel.app")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-white bg-sky-500 rounded-lg px-4 py-2 hover:bg-sky-600 transition-colors"
+                  >
+                    𝕏 シェア
+                  </a>
                   <button
                     onClick={copyTab}
                     className="text-sm text-gray-500 border border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors"

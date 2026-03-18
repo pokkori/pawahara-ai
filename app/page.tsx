@@ -842,6 +842,18 @@ export default function PawaharaAI() {
             )}
           </div>
 
+          {/* Loading */}
+          {loading && (
+            <div className="mt-8 bg-white border border-gray-200 rounded-2xl flex items-center justify-center min-h-[200px]">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto mb-3" />
+                <p className="text-sm text-gray-500 font-medium">AIが状況を分析しています...</p>
+                <p className="text-xs text-gray-400 mt-2">📊 状況分析 → ⚖️ 法的根拠確認 → 📋 対応スクリプト生成</p>
+                <p className="text-xs text-gray-300 mt-1">通常30秒ほどかかります</p>
+              </div>
+            </div>
+          )}
+
           {/* Results */}
           {result && (
             <div ref={resultRef} className="mt-8 space-y-4 animate-fade-in-up">

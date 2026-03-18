@@ -1002,6 +1002,24 @@ export default function PawaharaAI() {
                   <span className="text-blue-700 font-bold text-xs bg-blue-100 px-2 py-1 rounded-full">無料で始める →</span>
                 </a>
                 <p className="text-xs text-slate-400 text-center mt-2">※ 広告・PR掲載（公式サイトに遷移します）</p>
+                {/* FPカフェアフィリエイト（A8.net）*/}
+                <div className="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-4">
+                  <p className="text-sm font-black text-blue-800 mb-1">💰 弁護士費用のご相談（PR）</p>
+                  <p className="text-xs text-blue-700 mb-3">パワハラ・労働問題の弁護士費用や法的費用について、FPに無料相談できます。</p>
+                  <a
+                    href="https://px.a8.net/svt/ejp?a8mat=4AZIOF+2SMA0I+5ULO+5YZ75"
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    className="flex items-center justify-between bg-white border border-blue-300 rounded-xl px-4 py-3 hover:bg-blue-50 transition-colors"
+                  >
+                    <div>
+                      <div className="text-sm font-bold text-slate-800">FPカフェ — お金の専門家に無料相談</div>
+                      <div className="text-xs text-slate-500 mt-0.5">弁護士費用・資金繰りを専門家がサポート • 全国対応</div>
+                    </div>
+                    <span className="text-blue-700 font-bold text-xs bg-blue-100 px-2 py-1 rounded-full">無料相談 →</span>
+                  </a>
+                  <p className="text-xs text-slate-400 text-center mt-2">※ 広告・PR掲載（公式サイトに遷移します）</p>
+                </div>
               </div>
             </div>
             </div>

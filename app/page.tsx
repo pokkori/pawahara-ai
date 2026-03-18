@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import PayjpModal from "@/components/PayjpModal";
+import KomojuButton from "@/components/KomojuButton";
 import { track } from '@vercel/analytics';
 
 const FREE_LIMIT = 3;
@@ -376,13 +376,17 @@ export default function PawaharaAI() {
   return (
     <main className="min-h-screen bg-white">
       {showPayjp && (
-        <PayjpModal
-          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
-          planLabel={payjpPlan === "light" ? "ライトプラン ¥980/月" : "スタンダードプラン ¥2,980/月"}
-          plan={payjpPlan}
-          onSuccess={() => { setShowPayjp(false); setShowPaywall(false); setIsPremium(true); }}
-          onClose={() => setShowPayjp(false)}
-        />
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
+            <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <h2 className="text-lg font-bold mb-4 text-center">プレミアムプランに登録</h2>
+            {payjpPlan === "light" ? (
+              <KomojuButton planId="light" planLabel="ライトプラン ¥980/月を始める" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50" />
+            ) : (
+              <KomojuButton planId="standard" planLabel="スタンダードプラン ¥2,980/月を始める" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50" />
+            )}
+          </div>
+        </div>
       )}
       {showPaywall && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">

@@ -944,6 +944,32 @@ export default function PawaharaAI() {
                   ))}
                 </ol>
               </div>
+              {/* 弁護士相談アフィリエイト（A8.net申請後URLを差し替え） */}
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                <p className="text-sm font-black text-slate-800 mb-1">⚖️ 弁護士に無料相談する</p>
+                <p className="text-xs text-slate-600 mb-4">深刻なパワハラは弁護士への相談が最短解決策。初回無料・秘密厳守の事務所が多数。</p>
+                <div className="space-y-2">
+                  {/* TODO: Replace href with A8.net affiliate URL after approval */}
+                  <a href="https://www.bengo4.com/c_5/" target="_blank" rel="noopener noreferrer sponsored"
+                    className="flex items-center justify-between bg-white border border-slate-300 rounded-xl px-4 py-3 hover:bg-slate-50 transition-colors">
+                    <div>
+                      <div className="text-sm font-bold text-slate-800">弁護士ドットコム — 労働問題専門</div>
+                      <div className="text-xs text-slate-500 mt-0.5">初回相談無料 • 全国の弁護士を即日検索</div>
+                    </div>
+                    <span className="text-red-600 font-bold text-xs bg-red-50 border border-red-200 px-2 py-1 rounded-full">無料相談 →</span>
+                  </a>
+                  {/* TODO: Replace href with A8.net affiliate URL after approval */}
+                  <a href="https://www.legal-mall.com/s/roudou" target="_blank" rel="noopener noreferrer sponsored"
+                    className="flex items-center justify-between bg-white border border-slate-300 rounded-xl px-4 py-3 hover:bg-slate-50 transition-colors">
+                    <div>
+                      <div className="text-sm font-bold text-slate-800">ベンナビ労働問題 — パワハラ・解雇</div>
+                      <div className="text-xs text-slate-500 mt-0.5">地域・得意分野で絞り込み • 弁護士費用の目安も確認</div>
+                    </div>
+                    <span className="text-red-600 font-bold text-xs bg-red-50 border border-red-200 px-2 py-1 rounded-full">弁護士を探す →</span>
+                  </a>
+                </div>
+                <p className="text-xs text-slate-400 text-center mt-3">※ 広告・PR掲載（各社公式サイトに遷移します）</p>
+              </div>
             </div>
             </div>
           )}

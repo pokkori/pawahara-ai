@@ -928,6 +928,22 @@ export default function PawaharaAI() {
                   : <p className="text-sm text-gray-400">（このタブの内容がありません）</p>
                 }
               </div>
+              {/* 次のアクション3選 */}
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                <p className="text-sm font-bold text-red-800 mb-3">📋 次にやるべきこと3選</p>
+                <ol className="space-y-2">
+                  {[
+                    { icon: "📝", text: "今日から日時・内容・証人を記録した「パワハラ日誌」をつける" },
+                    { icon: "🏛️", text: "労働局・総合労働相談コーナーに無料相談を申し込む" },
+                    { icon: "⚖️", text: "深刻なケースは弁護士の無料法律相談（法テラス）を利用する" },
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
+                      <span className="text-lg leading-none">{item.icon}</span>
+                      <span>{i + 1}. {item.text}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
             </div>
           )}

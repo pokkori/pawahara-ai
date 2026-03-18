@@ -970,6 +970,39 @@ export default function PawaharaAI() {
                 </div>
                 <p className="text-xs text-slate-400 text-center mt-3">※ 広告・PR掲載（各社公式サイトに遷移します）</p>
               </div>
+              {/* 労務・メンタルケアアフィリエイト */}
+              <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+                <p className="text-sm font-black text-green-800 mb-1">💼 労務・給与管理を整えよう</p>
+                <p className="text-xs text-green-700 mb-3">パワハラ解決後は労務・給与の正しい管理も大切。クラウド会計で経費・給与を一括管理しましょう。</p>
+                <a
+                  href="https://px.a8.net/svt/ejp?a8mat=4AZIOF+3LSINM+3SPO+9FDPYR"
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="flex items-center justify-between bg-white border border-green-300 rounded-xl px-4 py-3 hover:bg-green-50 transition-colors mb-2"
+                >
+                  <div>
+                    <div className="text-sm font-bold text-slate-800">freee会計 — 給与・経費をまとめて管理</div>
+                    <div className="text-xs text-slate-500 mt-0.5">中小企業・フリーランス向け • 初月無料で試せる</div>
+                  </div>
+                  <span className="text-green-700 font-bold text-xs bg-green-100 px-2 py-1 rounded-full">無料で試す →</span>
+                </a>
+                <p className="text-xs text-slate-400 text-center mt-1 mb-3">※ 広告・PR掲載（公式サイトに遷移します）</p>
+                <p className="text-sm font-black text-blue-800 mb-1">🧘 ストレス発散にオンラインヨガ</p>
+                <p className="text-xs text-blue-700 mb-3">職場ストレスが続くときは、体を動かすことが心の回復に効果的。自宅でいつでも参加できるヨガで気持ちをリセット。</p>
+                <a
+                  href="https://px.a8.net/svt/ejp?a8mat=4AZIOF+8OKLDE+4EPM+63OY9"
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="flex items-center justify-between bg-white border border-blue-300 rounded-xl px-4 py-3 hover:bg-blue-50 transition-colors"
+                >
+                  <div>
+                    <div className="text-sm font-bold text-slate-800">SOELU — オンラインヨガ・フィットネス</div>
+                    <div className="text-xs text-slate-500 mt-0.5">自宅でライブレッスン参加 • 初回30日間無料</div>
+                  </div>
+                  <span className="text-blue-700 font-bold text-xs bg-blue-100 px-2 py-1 rounded-full">無料で始める →</span>
+                </a>
+                <p className="text-xs text-slate-400 text-center mt-2">※ 広告・PR掲載（公式サイトに遷移します）</p>
+              </div>
             </div>
             </div>
           )}

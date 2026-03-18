@@ -1030,6 +1030,26 @@ export default function PawaharaAI() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="py-12 bg-gray-50 px-6">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-xl font-bold text-center text-gray-800 mb-6">よくある質問</h2>
+          <div className="space-y-4">
+            {[
+              { q: "どんなパワハラ事例に対応していますか？", a: "怒鳴り・無視・過大な業務・個人攻撃・SNS投稿など厚生労働省が定める6類型すべてに対応。証拠記録・社内相談・法的手続きまでサポートします。" },
+              { q: "弁護士に相談するより何が良いですか？", a: "弁護士着手金の相場は¥30〜50万。本サービスは月額¥9,800で24時間いつでも対応策を生成できます。まず状況整理→必要なら弁護士紹介まで一貫してサポートします。" },
+              { q: "証拠が残っていなくても使えますか？", a: "はい。証拠がない状態でも、今後の証拠収集方法・記録のつけ方・証人確保の手順をAIがアドバイスします。これから証拠を作るためのツールとしても活用できます。" },
+              { q: "会社に知られずに使えますか？", a: "完全に匿名でご利用いただけます。入力した情報は会社・上司・人事部門には一切共有されません。" },
+            ].map((faq, i) => (
+              <div key={i} className="bg-white rounded-xl p-5 shadow-sm">
+                <p className="font-semibold text-orange-700 mb-2 text-sm">Q. {faq.q}</p>
+                <p className="text-sm text-gray-600">A. {faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="border-t border-gray-100 py-8 px-6">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-400">

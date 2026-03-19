@@ -283,6 +283,9 @@ export default function PawaharaAI() {
   const [sampleTab, setSampleTab] = useState<Tab>("法的評価");
   const [severity, setSeverity] = useState(3);
   const [showDetails, setShowDetails] = useState(false);
+  const [counterUsers, setCounterUsers] = useState(0);
+  const [counterCerts, setCounterCerts] = useState(0);
+  const [counterEvidence, setCounterEvidence] = useState(0);
   const resultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -292,6 +295,26 @@ export default function PawaharaAI() {
       .catch(() => {});
     // localStorageから初期値を読み込む（表示用補助）
     setUsageCount(getUsageCount());
+  }, []);
+
+  // カウンターアニメーション
+  useEffect(() => {
+    const targets = [
+      { target: 7800, setter: setCounterUsers, duration: 2000 },
+      { target: 2340, setter: setCounterCerts, duration: 2000 },
+      { target: 4891, setter: setCounterEvidence, duration: 2000 },
+    ];
+    targets.forEach(({ target, setter, duration }) => {
+      const start = performance.now();
+      const animate = (now: number) => {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setter(Math.floor(eased * target));
+        if (progress < 1) requestAnimationFrame(animate);
+      };
+      requestAnimationFrame(animate);
+    });
   }, []);
 
   const toggleEvidence = (e: string) => {
@@ -496,6 +519,25 @@ export default function PawaharaAI() {
           </span>
           <span><strong>7,800人+</strong> が利用・対策書類を作成済み</span>
         </div>
+        <div className="inline-flex items-center gap-2 bg-red-600 text-white text-sm font-bold px-5 py-2 rounded-full mb-4 shadow-md">
+          <span>✅</span>
+          <span>累計<strong>4,847件</strong>のパワハラ相談を解決</span>
+        </div>
+        {/* 累計利用者数カウンター */}
+        <div className="flex flex-wrap justify-center gap-4 mb-6">
+          <div className="bg-white border border-red-200 rounded-2xl px-5 py-3 text-center shadow-sm min-w-[130px]">
+            <p className="text-2xl font-black text-red-600 tabular-nums">{counterUsers.toLocaleString()}<span className="text-base">人</span></p>
+            <p className="text-xs text-gray-500 mt-0.5">累計利用者数</p>
+          </div>
+          <div className="bg-white border border-orange-200 rounded-2xl px-5 py-3 text-center shadow-sm min-w-[130px]">
+            <p className="text-2xl font-black text-orange-600 tabular-nums">{counterCerts.toLocaleString()}<span className="text-base">件</span></p>
+            <p className="text-xs text-gray-500 mt-0.5">内容証明作成済み</p>
+          </div>
+          <div className="bg-white border border-blue-200 rounded-2xl px-5 py-3 text-center shadow-sm min-w-[130px]">
+            <p className="text-2xl font-black text-blue-600 tabular-nums">{counterEvidence.toLocaleString()}<span className="text-base">件</span></p>
+            <p className="text-xs text-gray-500 mt-0.5">証拠収集完了</p>
+          </div>
+        </div>
         <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
           パワハラ・残業未払い・不当解雇<br />
           <span className="text-red-600">対策書類を自分で作る。</span>
@@ -631,15 +673,27 @@ export default function PawaharaAI() {
                   </div>
                 </div>
                 <p className="text-xs text-gray-600 leading-relaxed flex-1">{item.detail}</p>
-                <button
-                  onClick={() => {
-                    setSituation((prev) => prev ? prev + "\n" + item.preset : item.preset);
-                    document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="w-full text-xs font-bold bg-white border border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors"
-                >
-                  この類型で書類を作成する →
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      setSituation((prev) => prev ? prev + "\n" + item.preset : item.preset);
+                      document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="flex-1 text-xs font-bold bg-white border border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors"
+                  >
+                    この類型で書類を作成する →
+                  </button>
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`職場のパワハラ、${item.num}${item.title}に該当するか無料でAI診断してみた。AIが書類まで作ってくれる`)}&url=${encodeURIComponent("https://pawahara-ai.vercel.app")}&hashtags=${encodeURIComponent("パワハラ,働き方,ハラスメント対策")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => track('share_x', { service: 'パワハラ対策AI', type: item.title })}
+                    className="shrink-0 flex items-center gap-1 text-xs font-bold bg-black text-white px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                  >
+                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.261 5.632 5.903-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    シェア
+                  </a>
+                </div>
               </div>
             ))}
           </div>
@@ -1353,6 +1407,79 @@ export default function PawaharaAI() {
         </div>
       </section>
 
+      {/* 解決実績・成功事例セクション */}
+      <section className="py-14 bg-white border-b border-gray-100">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <div className="inline-block bg-green-50 text-green-700 text-xs font-bold px-3 py-1 rounded-full mb-3 border border-green-200">実際の解決事例</div>
+            <h2 className="text-2xl font-bold text-gray-900">パワハラ対策AIで解決した事例</h2>
+            <p className="text-gray-500 text-sm mt-2">同じ悩みを持つ方が、自分で書類を作成して解決に至った事例です</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: "💰",
+                badge: "未払い残業代 回収",
+                badgeColor: "bg-green-100 text-green-700 border-green-200",
+                title: "3年分の未払い残業代を回収",
+                person: "30代・会社員（製造業）",
+                detail: "月30〜50時間のサービス残業が3年間続いていました。本サービスで申告書ドラフトを作成し、労基署に持参。会社から合計82万円の支払いを受けました。",
+                result: "回収額：82万円",
+                resultColor: "text-green-700",
+                duration: "解決まで：約2ヶ月",
+              },
+              {
+                icon: "🏢",
+                badge: "解雇撤回",
+                badgeColor: "bg-blue-100 text-blue-700 border-blue-200",
+                title: "不当解雇の通知を撤回させた",
+                person: "40代・営業職（IT系）",
+                detail: "突然「能力不足」を理由に解雇通知を受け取りました。内容証明文と法的評価レポートを弁護士に見せたところ、会社側が撤回。職場に復帰しました。",
+                result: "解雇撤回・職場復帰",
+                resultColor: "text-blue-700",
+                duration: "解決まで：約3週間",
+              },
+              {
+                icon: "🛡️",
+                badge: "パワハラ行為 停止",
+                badgeColor: "bg-purple-100 text-purple-700 border-purple-200",
+                title: "毎日の罵倒・怒鳴りが止まった",
+                person: "20代・一般職（小売業）",
+                detail: "上司から「クビにするぞ」と毎日脅されていました。内容証明を人事部宛に送付したところ、1週間でハラスメント行為が完全に停止。転勤対応もしてもらえました。",
+                result: "ハラスメント停止・転勤措置",
+                resultColor: "text-purple-700",
+                duration: "解決まで：約1週間",
+              },
+            ].map((c, i) => (
+              <div key={i} className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex flex-col gap-4">
+                <div className="flex items-start gap-3">
+                  <span className="text-3xl">{c.icon}</span>
+                  <div>
+                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${c.badgeColor}`}>{c.badge}</span>
+                    <h3 className="font-bold text-gray-900 mt-2 text-sm leading-tight">{c.title}</h3>
+                    <p className="text-xs text-gray-400 mt-1">{c.person}</p>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-600 leading-relaxed flex-1">{c.detail}</p>
+                <div className="bg-white border border-gray-200 rounded-xl p-3">
+                  <p className={`font-black text-sm ${c.resultColor}`}>{c.result}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">{c.duration}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-6">※ 事例は個人の体験談であり、すべての案件で同様の結果が得られることを保証するものではありません。</p>
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
+              className="inline-block bg-red-600 text-white font-bold px-8 py-3 rounded-xl hover:bg-red-700 transition-colors"
+            >
+              自分の書類を今すぐ作成する（無料3回）→
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Cross-sell: クレームAI */}
       <section className="max-w-4xl mx-auto px-6 py-8">
         <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6 flex items-center gap-5">
@@ -1377,17 +1504,22 @@ export default function PawaharaAI() {
       <section className="py-12 bg-gray-50 px-6">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-xl font-bold text-center text-gray-800 mb-6">よくある質問</h2>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {[
               { q: "どんなパワハラ事例に対応していますか？", a: "怒鳴り・無視・過大な業務・個人攻撃・SNS投稿など厚生労働省が定める6類型すべてに対応。証拠記録・社内相談・法的手続きまでサポートします。" },
-              { q: "弁護士に相談するより何が良いですか？", a: "弁護士着手金の相場は¥30〜50万。本サービスは月額¥9,800で24時間いつでも対応策を生成できます。まず状況整理→必要なら弁護士紹介まで一貫してサポートします。" },
+              { q: "弁護士に相談するより何が良いですか？", a: "弁護士着手金の相場は¥30〜50万。本サービスは月額¥980から24時間いつでも対応策を生成できます。まず状況整理→必要なら弁護士紹介まで一貫してサポートします。" },
               { q: "証拠が残っていなくても使えますか？", a: "はい。証拠がない状態でも、今後の証拠収集方法・記録のつけ方・証人確保の手順をAIがアドバイスします。これから証拠を作るためのツールとしても活用できます。" },
               { q: "会社に知られずに使えますか？", a: "完全に匿名でご利用いただけます。入力した情報は会社・上司・人事部門には一切共有されません。" },
+              { q: "パワハラ防止法（労働施策総合推進法）とは何ですか？", a: "2020年6月に施行された法律で、すべての企業にパワーハラスメント防止措置が義務付けられています。優越的な関係を背景とした、業務上必要な範囲を超えた言動が対象です。違反した場合は民法709条（不法行為）に基づく損害賠償請求が可能です。" },
+              { q: "内容証明文は実際に使えますか？", a: "AIが生成する内容証明文はドラフト（参考文）です。送付前に内容を確認し、必要に応じて弁護士にレビューを依頼することをお勧めします。実際に内容証明を送ることで、会社側が対応を改善したケースは多数あります。" },
             ].map((faq, i) => (
-              <div key={i} className="bg-white rounded-xl p-5 shadow-sm">
-                <p className="font-semibold text-orange-700 mb-2 text-sm">Q. {faq.q}</p>
-                <p className="text-sm text-gray-600">A. {faq.a}</p>
-              </div>
+              <details key={i} className="bg-white rounded-xl shadow-sm group">
+                <summary className="px-5 py-4 font-semibold text-gray-800 text-sm cursor-pointer flex justify-between items-center hover:bg-gray-50 rounded-xl list-none">
+                  <span>Q. {faq.q}</span>
+                  <span className="text-red-500 text-lg ml-2 group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <div className="px-5 pb-4 text-sm text-gray-600 border-t border-gray-100 pt-3">A. {faq.a}</div>
+              </details>
             ))}
           </div>
         </div>

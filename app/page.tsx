@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import KomojuButton from "@/components/KomojuButton";
 import PawaharaChecklist from "@/components/PawaharaChecklist";
+import EvidenceTimeline from "@/components/EvidenceTimeline";
 import { track } from '@vercel/analytics';
 
 const FREE_LIMIT = 3;
@@ -26,6 +27,9 @@ const PROBLEM_PRESETS = [
   "業務とは無関係な雑用を強制された",
   "同僚からいじめ・無視を受けている",
   "降格・減給を不当に行われた",
+  "証拠がないまま泣き寝入りしそうで怖い",
+  "メンタルが限界で休職・退職を考えている",
+  "SNSや社内チャットで誹謗中傷された",
 ];
 
 const POSITION_OPTIONS = ["経営者・オーナー", "役員・取締役", "部長・マネージャー", "課長・チームリーダー", "先輩・同僚", "その他"];
@@ -372,6 +376,27 @@ export default function PawaharaAI() {
     if (result && result[activeTab]) {
       navigator.clipboard.writeText(result[activeTab]);
     }
+  };
+
+  const downloadResult = () => {
+    if (!result) return;
+    const lines = [
+      "【パワハラ対策AI — 生成結果】",
+      `生成日時: ${new Date().toLocaleString("ja-JP")}`,
+      "─".repeat(40),
+      ...TABS.map((tab) => [
+        `\n=== ${tab} ===`,
+        result[tab] || "（内容なし）",
+      ].join("\n")),
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `パワハラ対策_書類一式_${new Date().toISOString().slice(0, 10)}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    track("download_result", { service: "パワハラ対策AI" });
   };
 
   return (
@@ -910,7 +935,14 @@ export default function PawaharaAI() {
                 ))}
               </div>
               <div className="p-6">
-                <div className="flex justify-end gap-2 mb-4">
+                <div className="flex justify-end gap-2 mb-4 flex-wrap">
+                  <button
+                    onClick={downloadResult}
+                    className="text-sm text-white bg-blue-600 rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors font-bold"
+                    title="全5書類をテキストファイルで保存"
+                  >
+                    💾 全書類を保存
+                  </button>
                   <a
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                       `「パワハラ重大度${/重大|深刻|違法/.test(result["法的評価"]) ? "9" : /中程度|可能性/.test(result["法的評価"]) ? "6" : "4"}/10... これ職場に当てはまりすぎて怖い😅 対応策もAIが全部出してくれた → https://pawahara-ai.vercel.app #パワハラ対策 #労働問題 #AI相談`
@@ -1030,6 +1062,8 @@ export default function PawaharaAI() {
 
           {/* 証拠保全チェックリスト */}
           <PawaharaChecklist />
+          {/* 証拠記録タイムライン */}
+          <EvidenceTimeline />
         </div>
       </section>
 

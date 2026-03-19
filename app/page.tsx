@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import KomojuButton from "@/components/KomojuButton";
+import PawaharaChecklist from "@/components/PawaharaChecklist";
 import { track } from '@vercel/analytics';
 
 const FREE_LIMIT = 3;
@@ -1026,6 +1027,9 @@ export default function PawaharaAI() {
             </div>
             </div>
           )}
+
+          {/* 証拠保全チェックリスト */}
+          <PawaharaChecklist />
         </div>
       </section>
 

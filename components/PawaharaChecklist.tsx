@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const STORAGE_KEY = "pawahara_checklist";
 
@@ -48,6 +48,8 @@ const COLOR_MAP: Record<string, { badge: string; bar: string; border: string; bg
 export default function PawaharaChecklist() {
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [open, setOpen] = useState(false);
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const prevDoneRef = useRef(0);
 
   useEffect(() => {
     try {
@@ -67,7 +69,60 @@ export default function PawaharaChecklist() {
   const doneCount = Object.values(checked).filter(Boolean).length;
   const pct = Math.round((doneCount / TOTAL) * 100);
 
+  // 全項目完了時にモーダルを表示（初回だけ）
+  useEffect(() => {
+    if (prevDoneRef.current < TOTAL && doneCount === TOTAL) {
+      setShowCompleteModal(true);
+    }
+    prevDoneRef.current = doneCount;
+  }, [doneCount]);
+
   return (
+    <>
+    {showCompleteModal && (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+        <div className="bg-white rounded-2xl p-7 max-w-sm w-full shadow-xl text-center relative">
+          <button
+            onClick={() => setShowCompleteModal(false)}
+            className="absolute top-3 right-4 text-gray-400 text-xl hover:text-gray-600"
+          >
+            ✕
+          </button>
+          <div className="text-5xl mb-3">🎉</div>
+          <h2 className="text-lg font-black text-gray-900 mb-2">証拠収集完了！</h2>
+          <p className="text-sm text-gray-600 mb-5">
+            全10項目クリアしました。<br />
+            次は弁護士相談ステップへ進みましょう。
+          </p>
+          <div className="space-y-3">
+            <a
+              href="#tool"
+              onClick={() => { setShowCompleteModal(false); document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" }); }}
+              className="block w-full bg-red-600 text-white font-bold py-3 rounded-xl hover:bg-red-700 transition-colors text-sm"
+            >
+              内容証明を作成する →
+            </a>
+            <a
+              href="https://www.bengo4.com/c_5/"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="block w-full border border-red-400 text-red-600 font-bold py-3 rounded-xl hover:bg-red-50 transition-colors text-sm"
+            >
+              弁護士に無料相談する（弁護士ドットコム）→
+            </a>
+            <a
+              href="https://www.legal-mall.com/s/roudou"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="block w-full border border-gray-300 text-gray-600 py-2.5 rounded-xl hover:bg-gray-50 transition-colors text-sm"
+            >
+              ベンナビ労働問題で弁護士を探す →
+            </a>
+          </div>
+          <p className="text-xs text-gray-400 mt-4">※ 各リンクは広告・PR掲載です</p>
+        </div>
+      </div>
+    )}
     <div className="mt-8 bg-white border border-red-200 rounded-2xl overflow-hidden">
       {/* Header (always visible) */}
       <button
@@ -159,5 +214,6 @@ export default function PawaharaChecklist() {
         </div>
       )}
     </div>
+    </>
   );
 }

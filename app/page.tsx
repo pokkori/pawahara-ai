@@ -554,6 +554,101 @@ export default function PawaharaAI() {
         </div>
       </section>
 
+      {/* 厚生労働省パワハラ6類型セクション */}
+      <section className="py-14 bg-red-50 border-b border-red-100">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 bg-red-100 text-red-700 text-xs font-bold px-4 py-1.5 rounded-full mb-3 border border-red-200">
+              <span>🏛️</span>
+              <span>厚生労働省 2020年6月施行 パワハラ防止法準拠</span>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900">厚生労働省が定める<span className="text-red-600">パワハラ6類型</span></h2>
+            <p className="text-gray-500 text-sm mt-2">あなたが受けている行為は、どの類型に該当しますか？</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              {
+                num: "①",
+                title: "身体的な攻撃",
+                desc: "暴力・傷害",
+                detail: "殴る・蹴る・物を投げつけるなど、身体に危害を加える行為。",
+                preset: "上司から暴力・身体的な攻撃を受けた",
+                color: "border-red-300 bg-red-50",
+                badgeColor: "bg-red-600 text-white",
+              },
+              {
+                num: "②",
+                title: "精神的な攻撃",
+                desc: "脅迫・侮辱・暴言",
+                detail: "「死ね」「クビにする」などの脅し・侮辱・ひどい暴言を繰り返す行為。",
+                preset: "上司から毎日怒鳴られる・罵倒される",
+                color: "border-orange-300 bg-orange-50",
+                badgeColor: "bg-orange-500 text-white",
+              },
+              {
+                num: "③",
+                title: "人間関係からの切り離し",
+                desc: "隔離・仲間外し",
+                detail: "特定の社員を無視・仲間外し・別室に隔離するなど孤立させる行為。",
+                preset: "職場で無視・仲間外しされている",
+                color: "border-yellow-300 bg-yellow-50",
+                badgeColor: "bg-yellow-500 text-white",
+              },
+              {
+                num: "④",
+                title: "過大な要求",
+                desc: "業務上不要・不可能な要求",
+                detail: "明らかに達成不可能なノルマや、業務外の雑用を強制する行為。",
+                preset: "業務とは無関係な雑用を強制された",
+                color: "border-green-300 bg-green-50",
+                badgeColor: "bg-green-600 text-white",
+              },
+              {
+                num: "⑤",
+                title: "過小な要求",
+                desc: "能力を大きく下回る作業を命じる",
+                detail: "管理職を清掃のみに従事させるなど、能力に見合わない作業だけを与える行為。",
+                preset: "降格・減給を不当に行われた",
+                color: "border-blue-300 bg-blue-50",
+                badgeColor: "bg-blue-600 text-white",
+              },
+              {
+                num: "⑥",
+                title: "個の侵害",
+                desc: "私的なことへの過度な立入り",
+                detail: "交友関係・家族・病歴などプライベートへの過度な詮索・干渉。",
+                preset: "SNSや社内チャットで誹謗中傷された",
+                color: "border-purple-300 bg-purple-50",
+                badgeColor: "bg-purple-600 text-white",
+              },
+            ].map((item) => (
+              <div key={item.num} className={`border-2 ${item.color} rounded-2xl p-5 flex flex-col gap-3`}>
+                <div className="flex items-start gap-2">
+                  <span className={`text-xs font-black px-2 py-0.5 rounded-full shrink-0 ${item.badgeColor}`}>{item.num}</span>
+                  <div>
+                    <p className="font-black text-gray-900 text-sm leading-tight">{item.title}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{item.desc}</p>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-600 leading-relaxed flex-1">{item.detail}</p>
+                <button
+                  onClick={() => {
+                    setSituation((prev) => prev ? prev + "\n" + item.preset : item.preset);
+                    document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="w-full text-xs font-bold bg-white border border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors"
+                >
+                  この類型で書類を作成する →
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 text-center">
+            <p className="text-xs text-gray-400">出典: 厚生労働省「職場におけるパワーハラスメント対策が事業主の義務になりました！」（2020年6月施行）</p>
+          </div>
+        </div>
+      </section>
+
       {/* ペルソナ共感セクション */}
       <section className="py-14 bg-white">
         <div className="max-w-3xl mx-auto px-6">

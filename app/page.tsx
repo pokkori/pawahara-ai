@@ -532,6 +532,28 @@ export default function PawaharaAI() {
         </div>
       </section>
 
+      {/* 法的根拠バッジセクション */}
+      <section className="py-8 bg-white border-b border-gray-100">
+        <div className="max-w-4xl mx-auto px-6">
+          <p className="text-center text-xs font-bold text-gray-400 mb-4 uppercase tracking-widest">法的根拠に基づいて判定・書類を生成</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {[
+              { law: "労働施策総合推進法 第30条の2", short: "パワハラ防止法", color: "bg-red-50 border-red-200 text-red-700" },
+              { law: "民法 第709条", short: "不法行為・損害賠償", color: "bg-orange-50 border-orange-200 text-orange-700" },
+              { law: "労働契約法 第5条", short: "安全配慮義務", color: "bg-amber-50 border-amber-200 text-amber-700" },
+              { law: "労働基準法 第104条", short: "労基署申告権", color: "bg-yellow-50 border-yellow-200 text-yellow-700" },
+              { law: "男女雇用機会均等法 第11条", short: "セクハラ防止義務", color: "bg-pink-50 border-pink-200 text-pink-700" },
+            ].map((item) => (
+              <div key={item.short} className={`flex flex-col items-center border rounded-xl px-4 py-2.5 ${item.color}`}>
+                <span className="text-xs font-bold">{item.short}</span>
+                <span className="text-xs opacity-70 mt-0.5">{item.law}</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-3">※ 本サービスの法的評価はこれらの法律に基づいて判定します。弁護士業務ではありません。</p>
+        </div>
+      </section>
+
       {/* ペルソナ共感セクション */}
       <section className="py-14 bg-white">
         <div className="max-w-3xl mx-auto px-6">
@@ -559,6 +581,80 @@ export default function PawaharaAI() {
               className="inline-block mt-4 bg-red-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-red-700 transition-colors text-sm"
             >
               無料で書類を作成する（3回・登録不要）→
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 証拠収集5ステップガイド */}
+      <section className="py-14 bg-slate-50">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-8">
+            <div className="inline-block bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mb-3 border border-blue-200">証拠収集ガイド — 今日からできる</div>
+            <h2 className="text-2xl font-bold text-gray-900">「証拠が何もない」状態から始める5ステップ</h2>
+            <p className="text-gray-500 text-sm mt-2">弁護士に依頼する前に、自分でできる証拠収集の手順を整理しました</p>
+          </div>
+          <div className="space-y-3">
+            {[
+              {
+                step: "Step 1",
+                title: "スマホのボイスメモを常時ONにする",
+                detail: "秘密録音は原則合法（証拠能力あり）。「発言日時・場所・内容」が揃えば法廷でも使えます。Googleドライブに自動バックアップ推奨。",
+                badge: "今日から",
+                badgeColor: "bg-green-100 text-green-700 border-green-200",
+              },
+              {
+                step: "Step 2",
+                title: "「パワハラ日誌」を毎日つける",
+                detail: "手書き・デジタル問わず証拠能力あり。フォーマット: 「[日時] [場所] [発言者] [発言内容そのまま] [目撃者名]」の5項目を必ず記録。",
+                badge: "今日から",
+                badgeColor: "bg-green-100 text-green-700 border-green-200",
+              },
+              {
+                step: "Step 3",
+                title: "メール・チャットをスクリーンショット保存",
+                detail: "暴言・不当指示のあるSlack/LINE/メールは即スクショ→外部ストレージに保存。会社支給PCのデータを無断コピーは避けること。",
+                badge: "今日から",
+                badgeColor: "bg-green-100 text-green-700 border-green-200",
+              },
+              {
+                step: "Step 4",
+                title: "体調不良があれば今すぐ受診",
+                detail: "抑うつ・不眠・PTSD症状がある場合は受診して診断書を取得。「業務起因性」を示す最強の証拠になります。受診前にパワハラ状況を医師に伝えること。",
+                badge: "重要",
+                badgeColor: "bg-orange-100 text-orange-700 border-orange-200",
+              },
+              {
+                step: "Step 5",
+                title: "本サービスで証拠記録タイムラインを作成",
+                detail: "日時・内容・証拠種別・深刻度を記録できるタイムライン機能を無料で利用できます。テキスト出力で弁護士・労基署への提出書類にそのまま活用できます。",
+                badge: "AIで自動化",
+                badgeColor: "bg-blue-100 text-blue-700 border-blue-200",
+              },
+            ].map((item, i) => (
+              <div key={i} className="bg-white border border-gray-200 rounded-xl p-5 flex gap-4">
+                <div className="shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-black">
+                  {i + 1}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <span className="text-xs text-blue-600 font-bold">{item.step}</span>
+                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${item.badgeColor}`}>{item.badge}</span>
+                  </div>
+                  <p className="font-bold text-gray-900 text-sm mb-1">{item.title}</p>
+                  <p className="text-xs text-gray-600 leading-relaxed">{item.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+            <p className="text-sm text-blue-800 font-bold mb-1">証拠収集に今すぐ取り組みましょう</p>
+            <p className="text-xs text-blue-700 mb-3">まず状況を入力してAIに証拠収集ガイドラインを生成させてください。あなたの状況に特化した手順が届きます。</p>
+            <button
+              onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
+              className="inline-block bg-blue-600 text-white font-bold px-6 py-2.5 rounded-xl hover:bg-blue-700 transition-colors text-sm"
+            >
+              証拠収集ガイドを今すぐ生成する（無料）→
             </button>
           </div>
         </div>
@@ -1085,20 +1181,27 @@ export default function PawaharaAI() {
       <section className="bg-red-50 py-16">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-8">料金プラン</h2>
-          <div className="bg-amber-50 border border-amber-300 rounded-2xl p-5 mb-6 text-center">
-            <p className="text-sm text-amber-700 font-bold mb-2">💰 弁護士に依頼した場合との費用比較</p>
-            <div className="flex items-center justify-center gap-4">
-              <div className="text-center">
-                <div className="text-2xl font-black text-gray-400 line-through">¥300,000〜</div>
-                <div className="text-xs text-gray-400">弁護士への内容証明作成依頼</div>
-              </div>
-              <div className="text-2xl text-amber-500">→</div>
-              <div className="text-center">
-                <div className="text-2xl font-black text-amber-600">¥980/月</div>
-                <div className="text-xs text-amber-600">AIで何度でも作成</div>
-              </div>
+          <div className="bg-amber-50 border border-amber-300 rounded-2xl p-5 mb-6">
+            <p className="text-sm text-amber-700 font-bold mb-3 text-center">💰 弁護士費用シミュレーター — あなたが節約できる金額</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+              {[
+                { item: "初回相談料", lawyer: "¥5,000〜10,000", ai: "無料", saving: "最大¥10,000節約" },
+                { item: "内容証明作成", lawyer: "¥30,000〜50,000", ai: "無料〜¥980/月", saving: "最大¥50,000節約" },
+                { item: "労基署申告書", lawyer: "¥20,000〜", ai: "無料〜¥2,980/月", saving: "最大¥20,000節約" },
+                { item: "着手金（訴訟）", lawyer: "¥300,000〜", ai: "書類準備のみ", saving: "準備コスト削減" },
+              ].map((row) => (
+                <div key={row.item} className="bg-white border border-amber-200 rounded-xl p-3 text-center">
+                  <p className="text-xs font-bold text-gray-700 mb-1">{row.item}</p>
+                  <p className="text-xs text-gray-400 line-through mb-0.5">{row.lawyer}</p>
+                  <p className="text-sm font-black text-amber-600">{row.ai}</p>
+                  <p className="text-xs text-green-600 font-bold mt-1">{row.saving}</p>
+                </div>
+              ))}
             </div>
-            <p className="text-xs text-amber-500 mt-2">弁護士費用の 300分の1以下で同等の書類を作成</p>
+            <div className="bg-amber-100 border border-amber-300 rounded-xl p-3 text-center">
+              <p className="text-amber-800 font-black text-lg">最大 ¥300,000 以上の節約</p>
+              <p className="text-xs text-amber-700 mt-0.5">弁護士に依頼する前にAIで準備 → 弁護士費用を大幅に圧縮できます</p>
+            </div>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
             <div className="bg-white rounded-2xl p-6 border border-gray-200">

@@ -953,7 +953,6 @@ export default function PawaharaAI() {
                 <p className="text-sm font-black text-slate-800 mb-1">⚖️ 弁護士に無料相談する</p>
                 <p className="text-xs text-slate-600 mb-4">深刻なパワハラは弁護士への相談が最短解決策。初回無料・秘密厳守の事務所が多数。</p>
                 <div className="space-y-2">
-                  {/* TODO: Replace href with A8.net affiliate URL after approval */}
                   <a href="https://www.bengo4.com/c_5/" target="_blank" rel="noopener noreferrer sponsored"
                     className="flex items-center justify-between bg-white border border-slate-300 rounded-xl px-4 py-3 hover:bg-slate-50 transition-colors">
                     <div>
@@ -962,7 +961,6 @@ export default function PawaharaAI() {
                     </div>
                     <span className="text-red-600 font-bold text-xs bg-red-50 border border-red-200 px-2 py-1 rounded-full">無料相談 →</span>
                   </a>
-                  {/* TODO: Replace href with A8.net affiliate URL after approval */}
                   <a href="https://www.legal-mall.com/s/roudou" target="_blank" rel="noopener noreferrer sponsored"
                     className="flex items-center justify-between bg-white border border-slate-300 rounded-xl px-4 py-3 hover:bg-slate-50 transition-colors">
                     <div>

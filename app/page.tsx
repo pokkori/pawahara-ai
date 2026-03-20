@@ -1525,6 +1525,75 @@ export default function PawaharaAI() {
         </div>
       </section>
 
+      {/* パワハラAIだけができること — 差別化SEOセクション */}
+      <section className="bg-indigo-50 border-t border-indigo-100 py-14 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="inline-block bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full mb-3">他にない機能</div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">パワハラAIが弁護士・労組より先に使われる3つの理由</h2>
+            <p className="text-sm text-gray-500">「弁護士に行く前に状況を整理したい」という方に特に選ばれています</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5 mb-8">
+            {[
+              {
+                icon: "⚖️",
+                title: "法的根拠を5つ同時出力",
+                desc: "パワハラ防止法第30条の2・民法709条・会社の安全配慮義務（労働契約法5条）など、複数の法条文を評価レポートに自動付加。「どの法律が使えるか」を即整理できます。",
+                badge: "弁護士費用0円",
+              },
+              {
+                icon: "📋",
+                title: "5種類の文書を同時生成",
+                desc: "法的評価・証拠収集GL・内容証明文・労基署申告書・選択肢マップを1回の入力で全部生成。バラバラに頼む手間がゼロで、今すぐ行動に移せます。",
+                badge: "1回の入力で完了",
+              },
+              {
+                icon: "🛡️",
+                title: "証拠タイムラインで可視化",
+                desc: "時系列でパワハラ行為を記録できる証拠タイムラインUI。労基署・弁護士への相談時に「いつ・何が・どこで」を整理して持参できます。",
+                badge: "証拠力を高める",
+              },
+            ].map(item => (
+              <div key={item.title} className="bg-white rounded-2xl p-5 border border-indigo-100 shadow-sm">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-2xl">{item.icon}</span>
+                  <span className="text-xs bg-indigo-600 text-white font-bold px-2 py-0.5 rounded-full">{item.badge}</span>
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2 text-sm">{item.title}</h3>
+                <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="bg-white border border-indigo-200 rounded-2xl p-5 max-w-2xl mx-auto">
+            <p className="text-xs font-bold text-indigo-700 mb-3 text-center">パワハラAI vs 法的手段 — コスト・速度比較</p>
+            <div className="grid grid-cols-4 text-xs text-center gap-1">
+              <div className="font-bold text-gray-500 text-left text-xs">手段</div>
+              <div className="font-bold text-indigo-700 text-xs">パワハラAI</div>
+              <div className="font-bold text-gray-500 text-xs">弁護士</div>
+              <div className="font-bold text-gray-500 text-xs">労基署</div>
+              {[
+                ["費用", "無料〜¥980/月", "着手金¥30〜50万", "0円"],
+                ["スピード", "即日（15秒）", "数日〜数週間", "1〜6ヶ月"],
+                ["法的根拠", "自動付加", "提示あり", "対応あり"],
+                ["匿名で可能", "✅", "❌", "❌"],
+              ].map(([label, ai, lawyer, govt]) => (
+                <>
+                  <div key={label} className="text-left text-gray-600 py-1.5 border-t border-gray-100 text-xs">{label}</div>
+                  <div className="text-indigo-600 font-bold py-1.5 border-t border-gray-100">{ai}</div>
+                  <div className="text-gray-400 py-1.5 border-t border-gray-100">{lawyer}</div>
+                  <div className="text-gray-400 py-1.5 border-t border-gray-100">{govt}</div>
+                </>
+              ))}
+            </div>
+          </div>
+          <div className="text-center mt-6">
+            <Link href="/tool" className="inline-block bg-indigo-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-indigo-700 text-sm shadow-lg">
+              今すぐ無料で状況を整理する →
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* SNS Share */}
       <section className="py-8 px-6 text-center border-t border-gray-100">
         <p className="text-sm text-gray-500 mb-4">パワハラで困っている知人に教えてあげてください</p>

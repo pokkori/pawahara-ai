@@ -1404,6 +1404,21 @@ export default function PawaharaAI() {
             </div>
           </div>
           <p className="text-xs text-gray-400 mt-6">※ 弁護士費用の相場: 着手金30〜100万円 / 本サービスは法的助言ではありません</p>
+
+          <div className="bg-gray-800 rounded-lg p-6 mt-8 border border-gray-700">
+            <h3 className="text-white font-bold text-lg">🚨 重大なパワハラは専門家に相談</h3>
+            <p className="text-gray-400 mt-2 text-sm">解雇・大幅減給・継続的ハラスメントは法的手続きが有効です</p>
+            <div className="grid grid-cols-2 gap-3 mt-4">
+              <a href="https://www.bengo4.com/c_1076/" target="_blank" rel="noopener noreferrer"
+                 className="bg-green-700 text-white text-center py-3 px-4 rounded-lg text-sm font-bold hover:bg-green-600">
+                弁護士ドットコム<br/><span className="text-xs font-normal">無料相談受付中</span>
+              </a>
+              <a href="https://roudou-pro.com/" target="_blank" rel="noopener noreferrer"
+                 className="bg-blue-700 text-white text-center py-3 px-4 rounded-lg text-sm font-bold hover:bg-blue-600">
+                ベンナビ労働問題<br/><span className="text-xs font-normal">近くの弁護士を探す</span>
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 

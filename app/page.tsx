@@ -572,15 +572,15 @@ export default function PawaharaAI() {
         </div>
         {/* 累計利用者数カウンター */}
         <div className="flex flex-wrap justify-center gap-4 mb-6">
-          <div className="bg-white border border-red-200 rounded-2xl px-5 py-3 text-center shadow-sm min-w-[130px]">
+          <div className="backdrop-blur-sm bg-white/90 border border-red-200 rounded-2xl px-5 py-3 text-center shadow-sm min-w-[130px]">
             <p className="text-2xl font-black text-red-600 tabular-nums">{counterUsers.toLocaleString()}<span className="text-base">人</span></p>
             <p className="text-xs text-gray-500 mt-0.5">累計利用者数</p>
           </div>
-          <div className="bg-white border border-orange-200 rounded-2xl px-5 py-3 text-center shadow-sm min-w-[130px]">
+          <div className="backdrop-blur-sm bg-white/90 border border-orange-200 rounded-2xl px-5 py-3 text-center shadow-sm min-w-[130px]">
             <p className="text-2xl font-black text-orange-600 tabular-nums">{counterCerts.toLocaleString()}<span className="text-base">件</span></p>
             <p className="text-xs text-gray-500 mt-0.5">内容証明作成済み</p>
           </div>
-          <div className="bg-white border border-blue-200 rounded-2xl px-5 py-3 text-center shadow-sm min-w-[130px]">
+          <div className="backdrop-blur-sm bg-white/90 border border-blue-200 rounded-2xl px-5 py-3 text-center shadow-sm min-w-[130px]">
             <p className="text-2xl font-black text-blue-600 tabular-nums">{counterEvidence.toLocaleString()}<span className="text-base">件</span></p>
             <p className="text-xs text-gray-500 mt-0.5">証拠収集完了</p>
           </div>
@@ -831,7 +831,7 @@ export default function PawaharaAI() {
                 badgeColor: "bg-blue-100 text-blue-700 border-blue-200",
               },
             ].map((item, i) => (
-              <div key={i} className="bg-white border border-gray-200 rounded-xl p-5 flex gap-4">
+              <div key={i} className="backdrop-blur-sm bg-white/90 border border-gray-200 rounded-xl p-5 flex gap-4">
                 <div className="shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-black">
                   {i + 1}
                 </div>
@@ -1396,7 +1396,7 @@ export default function PawaharaAI() {
 
           {/* 診断履歴パネル */}
           {diagnosisHistory.length > 0 && (
-            <div className="mt-6 bg-white border border-gray-200 rounded-xl p-5">
+            <div className="mt-6 backdrop-blur-sm bg-white/90 border border-gray-200 rounded-xl p-5">
               <h3 className="text-sm font-bold text-gray-700 mb-3">過去の診断履歴（直近{diagnosisHistory.length}件）</h3>
               <ul className="space-y-2">
                 {diagnosisHistory.map((h, i) => (
@@ -1424,7 +1424,7 @@ export default function PawaharaAI() {
         <h2 className="text-2xl font-bold text-center text-gray-900 mb-10">利用者の声</h2>
         <div className="grid md:grid-cols-3 gap-6">
           {VOICES.map((v) => (
-            <div key={v.role} className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+            <div key={v.role} className="backdrop-blur-sm bg-white/90 rounded-xl p-6 border border-gray-100">
               <p className="text-sm text-gray-700 mb-4">「{v.text}」</p>
               <p className="text-xs text-gray-400">{v.role}</p>
             </div>
@@ -1460,7 +1460,7 @@ export default function PawaharaAI() {
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
-            <div className="bg-white rounded-2xl p-6 border border-gray-200">
+            <div className="backdrop-blur-sm bg-white/90 rounded-2xl p-6 border border-gray-200">
               <div className="text-lg font-bold text-gray-900 mb-2">無料プラン</div>
               <div className="text-3xl font-bold text-gray-900 mb-4">¥0</div>
               <ul className="text-sm text-gray-600 space-y-2 mb-6 text-left">
@@ -1476,7 +1476,7 @@ export default function PawaharaAI() {
                 無料で試す
               </button>
             </div>
-            <div className="bg-white rounded-2xl p-6 border border-red-300">
+            <div className="backdrop-blur-sm bg-white/90 rounded-2xl p-6 border border-red-300">
               <div className="text-lg font-bold text-gray-900 mb-2">ライトプラン</div>
               <div className="text-3xl font-bold text-red-600 mb-4">¥980<span className="text-lg font-normal text-gray-500">/月</span></div>
               <ul className="text-sm text-gray-600 space-y-2 mb-6 text-left">
@@ -1578,7 +1578,7 @@ export default function PawaharaAI() {
                 duration: "解決まで：約1週間",
               },
             ].map((c, i) => (
-              <div key={i} className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex flex-col gap-4">
+              <div key={i} className="backdrop-blur-sm bg-white/90 border border-slate-200 rounded-2xl p-6 flex flex-col gap-4">
                 <div className="flex items-start gap-3">
                   <span className="text-3xl">{c.icon}</span>
                   <div>
@@ -1588,7 +1588,7 @@ export default function PawaharaAI() {
                   </div>
                 </div>
                 <p className="text-xs text-gray-600 leading-relaxed flex-1">{c.detail}</p>
-                <div className="bg-white border border-gray-200 rounded-xl p-3">
+                <div className="backdrop-blur-sm bg-white/90 border border-gray-200 rounded-xl p-3">
                   <p className={`font-black text-sm ${c.resultColor}`}>{c.result}</p>
                   <p className="text-xs text-gray-400 mt-0.5">{c.duration}</p>
                 </div>
@@ -1682,7 +1682,7 @@ export default function PawaharaAI() {
                 badge: "証拠力を高める",
               },
             ].map(item => (
-              <div key={item.title} className="bg-white rounded-2xl p-5 border border-indigo-100 shadow-sm">
+              <div key={item.title} className="backdrop-blur-sm bg-white/90 rounded-2xl p-5 border border-indigo-100 shadow-sm">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-2xl">{item.icon}</span>
                   <span className="text-xs bg-indigo-600 text-white font-bold px-2 py-0.5 rounded-full">{item.badge}</span>
@@ -1692,7 +1692,7 @@ export default function PawaharaAI() {
               </div>
             ))}
           </div>
-          <div className="bg-white border border-indigo-200 rounded-2xl p-5 max-w-2xl mx-auto">
+          <div className="backdrop-blur-sm bg-white/90 border border-indigo-200 rounded-2xl p-5 max-w-2xl mx-auto">
             <p className="text-xs font-bold text-indigo-700 mb-3 text-center">パワハラAI vs 法的手段 — コスト・速度比較</p>
             <div className="grid grid-cols-4 text-xs text-center gap-1">
               <div className="font-bold text-gray-500 text-left text-xs">手段</div>

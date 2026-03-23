@@ -31,6 +31,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 };
 
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": SITE_URL },
+    { "@type": "ListItem", "position": 2, "name": "パワハラ対策AIツール", "item": `${SITE_URL}/tool` },
+  ],
+};
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -164,6 +173,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="ja">
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}

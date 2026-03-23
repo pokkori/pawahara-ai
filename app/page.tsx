@@ -1263,7 +1263,7 @@ export default function PawaharaAI() {
                   </button>
                   <a
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                      `「パワハラ重大度${/重大|深刻|違法/.test(result["法的評価"]) ? "9" : /中程度|可能性/.test(result["法的評価"]) ? "6" : "4"}/10... これ職場に当てはまりすぎて怖い😅 対応策もAIが全部出してくれた → https://pawahara-ai.vercel.app #パワハラ対策 #労働問題 #AI相談`
+                      `「パワハラ重大度${/重大|深刻|違法/.test(result["法的評価"]) ? "9" : /中程度|可能性/.test(result["法的評価"]) ? "6" : "4"}/10... これ職場に当てはまりすぎて怖い 対応策もAIが全部出してくれた → https://pawahara-ai.vercel.app #パワハラ対策 #労働問題 #AI相談`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -1727,7 +1727,7 @@ export default function PawaharaAI() {
         <p className="text-sm text-gray-500 mb-4">パワハラで困っている知人に教えてあげてください</p>
         <div className="inline-flex flex-col sm:flex-row gap-2">
           <a
-            href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("パワハラ対策AI — 状況を入力するだけで内容証明・申告書・退職交渉文を15秒で作成📄 無料で試せます → https://pawahara-ai.vercel.app #パワハラ #パワハラ対策 #労働問題")}
+            href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("パワハラ対策AI — 状況を入力するだけで内容証明・申告書・退職交渉文を15秒で作成 無料で試せます → https://pawahara-ai.vercel.app #パワハラ #パワハラ対策 #労働問題")}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="パワハラ対策AIをXでシェアする"

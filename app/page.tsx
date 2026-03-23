@@ -492,6 +492,7 @@ export default function PawaharaAI() {
           <span className="font-bold text-gray-900">🛡️ パワハラ対策AI</span>
           <button
             onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
+            aria-label="無料診断ツールセクションへスクロール"
             className="bg-red-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
           >
             無料で診断する
@@ -562,6 +563,7 @@ export default function PawaharaAI() {
         </div>
         <button
           onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
+          aria-label="無料3回の書類作成ツールへスクロール"
           className="bg-red-600 text-white text-lg font-bold px-8 py-4 rounded-xl hover:bg-red-700 transition-colors shadow-lg"
         >
           無料3回 — 今すぐ書類を作成する
@@ -679,6 +681,7 @@ export default function PawaharaAI() {
                       setSituation((prev) => prev ? prev + "\n" + item.preset : item.preset);
                       document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" });
                     }}
+                    aria-label={`${item.title}（${item.desc}）の類型で書類を作成する`}
                     className="flex-1 text-xs font-bold bg-white border border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors"
                   >
                     この類型で書類を作成する →
@@ -727,6 +730,7 @@ export default function PawaharaAI() {
             <p className="text-sm text-red-700">状況・期間・加害者の役職を入力するだけで、法的評価・内容証明・証拠収集GLが30秒で出力されます。</p>
             <button
               onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
+              aria-label="無料で書類を作成するツールへスクロール（3回・登録不要）"
               className="inline-block mt-4 bg-red-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-red-700 transition-colors text-sm"
             >
               無料で書類を作成する（3回・登録不要）→
@@ -801,6 +805,7 @@ export default function PawaharaAI() {
             <p className="text-xs text-blue-700 mb-3">まず状況を入力してAIに証拠収集ガイドラインを生成させてください。あなたの状況に特化した手順が届きます。</p>
             <button
               onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
+              aria-label="証拠収集ガイドを今すぐ無料で生成するツールへスクロール"
               className="inline-block bg-blue-600 text-white font-bold px-6 py-2.5 rounded-xl hover:bg-blue-700 transition-colors text-sm"
             >
               証拠収集ガイドを今すぐ生成する（無料）→
@@ -896,6 +901,8 @@ export default function PawaharaAI() {
               <button
                 key={tab}
                 onClick={() => setSampleTab(tab)}
+                aria-label={`サンプルプレビュー: ${tab}`}
+                aria-pressed={sampleTab === tab}
                 className={`flex-shrink-0 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
                   sampleTab === tab
                     ? "border-red-600 text-red-600 bg-red-50"
@@ -945,9 +952,10 @@ export default function PawaharaAI() {
             <p className="text-xs text-gray-400 mb-3">※ 実際の生成結果はあなたの状況・証拠・加害者の役職に基づいてAIが個別に作成します</p>
             <button
               onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
+              aria-label="自分の対策書類を今すぐ作成するツールへスクロール（無料3回）"
               className="inline-block bg-red-600 text-white font-bold px-7 py-3 rounded-xl hover:bg-red-700 transition-colors text-sm"
             >
-              🛡️ 自分の対策書類を今すぐ作成する（無料3回）→
+              自分の対策書類を今すぐ作成する（無料3回）→
             </button>
           </div>
         </div>
@@ -968,6 +976,7 @@ export default function PawaharaAI() {
                   <button
                     key={p}
                     onClick={() => handlePreset(p)}
+                    aria-label={`「${p}」を状況欄に追加`}
                     className="text-xs bg-red-50 text-red-700 border border-red-200 rounded-full px-3 py-1.5 hover:bg-red-100 transition-colors"
                   >
                     {p}
@@ -985,6 +994,8 @@ export default function PawaharaAI() {
                 value={situation}
                 onChange={(e) => setSituation(e.target.value)}
                 placeholder="例：上司から毎日怒鳴られ、業務外の作業を強要されています"
+                aria-label="パワハラ・労働問題の状況を入力（必須）"
+                aria-required="true"
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm h-28 resize-none focus:outline-none focus:ring-2 focus:ring-red-400"
               />
               <p className="text-xs text-gray-400 mt-1">これだけで診断できます。より詳しい情報は下の「詳細情報」から任意で追加できます。</p>
@@ -995,6 +1006,8 @@ export default function PawaharaAI() {
               <button
                 type="button"
                 onClick={() => setShowDetails(!showDetails)}
+                aria-label={showDetails ? "詳細情報を非表示にする" : "より正確な診断のために詳細情報を表示する"}
+                aria-expanded={showDetails}
                 className="flex items-center gap-2 text-sm font-medium text-red-700 hover:text-red-900 transition-colors"
               >
                 <span>{showDetails ? "▼" : "▶"}</span>
@@ -1013,6 +1026,7 @@ export default function PawaharaAI() {
                       value={duration}
                       onChange={(e) => setDuration(e.target.value)}
                       placeholder="例: 約3ヶ月間、ほぼ毎日"
+                      aria-label="ハラスメントが続いている期間・頻度（任意）"
                       className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
                     />
                   </div>
@@ -1026,6 +1040,8 @@ export default function PawaharaAI() {
                           key={p}
                           type="button"
                           onClick={() => setPosition(p)}
+                          aria-label={`加害者の役職: ${p}`}
+                          aria-pressed={position === p}
                           className={`text-sm px-4 py-2 rounded-lg border transition-colors ${
                             position === p
                               ? "bg-red-600 text-white border-red-600"
@@ -1047,6 +1063,8 @@ export default function PawaharaAI() {
                           key={e}
                           type="button"
                           onClick={() => toggleEvidence(e)}
+                          aria-label={`証拠の状況: ${e}`}
+                          aria-pressed={evidence.includes(e)}
                           className={`text-sm px-4 py-2 rounded-lg border transition-colors ${
                             evidence.includes(e)
                               ? "bg-red-600 text-white border-red-600"
@@ -1073,6 +1091,10 @@ export default function PawaharaAI() {
                         step={1}
                         value={severity}
                         onChange={(e) => setSeverity(Number(e.target.value))}
+                        aria-label={`深刻度チェック: レベル${severity}（1=軽微、5=限界）`}
+                        aria-valuemin={1}
+                        aria-valuemax={5}
+                        aria-valuenow={severity}
                         className="w-full accent-red-600 cursor-pointer"
                       />
                       <div className="flex justify-between text-xs text-gray-500 mt-1 px-0.5">
@@ -1102,6 +1124,7 @@ export default function PawaharaAI() {
             <button
               onClick={handleGenerate}
               disabled={loading}
+              aria-label={loading ? "AI分析中" : "診断を開始してパワハラ対策書類を生成する（無料）"}
               className="w-full bg-red-600 text-white font-bold py-4 rounded-xl hover:bg-red-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed text-lg"
             >
               {loading ? "🔄 生成中（30秒ほどかかります）..." : "🛡️ 診断開始（無料）"}
@@ -1169,6 +1192,8 @@ export default function PawaharaAI() {
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
+                    aria-label={`生成結果タブ: ${tab}`}
+                    aria-pressed={activeTab === tab}
                     className={`flex-shrink-0 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
                       activeTab === tab
                         ? "border-red-600 text-red-600 bg-red-50"
@@ -1183,10 +1208,11 @@ export default function PawaharaAI() {
                 <div className="flex justify-end gap-2 mb-4 flex-wrap">
                   <button
                     onClick={downloadResult}
+                    aria-label="全5種類の対策書類をテキストファイルとして保存"
                     className="text-sm text-white bg-blue-600 rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors font-bold"
                     title="全5書類をテキストファイルで保存"
                   >
-                    💾 全書類を保存
+                    全書類を保存
                   </button>
                   <a
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(

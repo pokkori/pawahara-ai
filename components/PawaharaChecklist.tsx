@@ -84,6 +84,7 @@ export default function PawaharaChecklist() {
         <div className="bg-white rounded-2xl p-7 max-w-sm w-full shadow-xl text-center relative">
           <button
             onClick={() => setShowCompleteModal(false)}
+            aria-label="モーダルを閉じる"
             className="absolute top-3 right-4 text-gray-400 text-xl hover:text-gray-600"
           >
             ✕
@@ -137,6 +138,8 @@ export default function PawaharaChecklist() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
+        aria-label={`パワハラ証拠保全チェックリスト — ${doneCount}/${TOTAL}完了 — ${open ? "折りたたむ" : "開く"}`}
+        aria-expanded={open}
         className="w-full flex items-center justify-between px-6 py-4 hover:bg-red-50 transition-colors"
       >
         <div className="flex items-center gap-3 text-left">

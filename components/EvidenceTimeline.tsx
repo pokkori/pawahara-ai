@@ -144,6 +144,8 @@ export default function EvidenceTimeline() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
+        aria-label={`証拠記録タイムライン — ${entries.length}件 — ${open ? "折りたたむ" : "開く"}`}
+        aria-expanded={open}
         className="w-full flex items-center justify-between px-6 py-4 hover:bg-blue-50 transition-colors"
       >
         <div className="flex items-center gap-3 text-left">
@@ -178,6 +180,7 @@ export default function EvidenceTimeline() {
               {entries.length > 0 && (
                 <button
                   onClick={handleExport}
+                  aria-label="証拠記録をテキストファイルとして出力"
                   className="text-xs text-blue-600 border border-blue-300 rounded-lg px-3 py-1.5 hover:bg-blue-50 transition-colors"
                 >
                   テキスト出力
@@ -185,6 +188,8 @@ export default function EvidenceTimeline() {
               )}
               <button
                 onClick={() => setShowForm((f) => !f)}
+                aria-label={showForm ? "記録追加フォームを閉じる" : "新しい証拠記録を追加する"}
+                aria-expanded={showForm}
                 className="text-xs bg-blue-600 text-white rounded-lg px-3 py-1.5 hover:bg-blue-700 transition-colors font-bold"
               >
                 {showForm ? "閉じる" : "+ 記録を追加"}
@@ -305,6 +310,7 @@ export default function EvidenceTimeline() {
               <button
                 onClick={handleSubmit}
                 disabled={!form.date || !form.content.trim()}
+                aria-label="証拠記録を保存する"
                 className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
               >
                 記録を保存する
@@ -341,6 +347,7 @@ export default function EvidenceTimeline() {
                       </div>
                       <button
                         onClick={() => handleDelete(entry.id)}
+                        aria-label={`${formatDateJP(entry.date)}の記録を削除`}
                         className="shrink-0 text-xs text-gray-400 hover:text-red-500 transition-colors mt-0.5"
                         title="削除"
                       >

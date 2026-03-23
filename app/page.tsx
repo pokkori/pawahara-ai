@@ -470,7 +470,7 @@ export default function PawaharaAI() {
     <main className="min-h-screen bg-white">
       {showPayjp && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
             <button onClick={() => setShowPayjp(false)} aria-label="プレミアムプラン登録モーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
             <h2 className="text-lg font-bold mb-4 text-center">プレミアムプランに登録</h2>
             {payjpPlan === "light" ? (
@@ -483,7 +483,7 @@ export default function PawaharaAI() {
       )}
       {showPaywall && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
             <div className="text-3xl mb-3">🛡️</div>
             <h2 className="text-lg font-bold mb-2">状況は変わります。記録は続けてください。</h2>
             <p className="text-sm text-gray-500 mb-4">新たなパワハラが起きるたびに対策書類が必要です。証拠が増えるほど有利になります。</p>
@@ -771,7 +771,7 @@ export default function PawaharaAI() {
               </div>
             ))}
           </div>
-          <div className="mt-8 bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+          <div className="mt-8 bg-red-50/90 backdrop-blur-sm border border-red-200 rounded-xl p-6 text-center">
             <p className="text-red-800 font-bold text-base mb-2">パワハラ対策AIが、これら全てを解決します</p>
             <p className="text-sm text-red-700">状況・期間・加害者の役職を入力するだけで、法的評価・内容証明・証拠収集GLが30秒で出力されます。</p>
             <button
@@ -846,7 +846,7 @@ export default function PawaharaAI() {
               </div>
             ))}
           </div>
-          <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+          <div className="mt-6 bg-blue-50/90 backdrop-blur-sm border border-blue-200 rounded-xl p-4 text-center">
             <p className="text-sm text-blue-800 font-bold mb-1">証拠収集に今すぐ取り組みましょう</p>
             <p className="text-xs text-blue-700 mb-3">まず状況を入力してAIに証拠収集ガイドラインを生成させてください。あなたの状況に特化した手順が届きます。</p>
             <button
@@ -1286,7 +1286,7 @@ export default function PawaharaAI() {
                 }
               </div>
               {/* 次のアクション3選 */}
-              <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+              <div className="bg-red-50/90 backdrop-blur-sm border border-red-200 rounded-xl p-4">
                 <p className="text-sm font-bold text-red-800 mb-3">📋 次にやるべきこと3選</p>
                 <ol className="space-y-2">
                   {[

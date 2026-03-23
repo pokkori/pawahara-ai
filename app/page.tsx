@@ -866,7 +866,7 @@ export default function PawaharaAI() {
           <h2 className="text-2xl font-bold text-center text-gray-900 mb-10">生成される5つの対策書類</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {FEATURES.map((f) => (
-              <div key={f.title} className="bg-white rounded-xl p-6 border border-gray-100">
+              <div key={f.title} className="backdrop-blur-sm bg-white/90 rounded-xl p-6 border border-gray-100 shadow-sm">
                 <div className="text-3xl mb-3">{f.icon}</div>
                 <div className="font-bold text-gray-900 mb-2">{f.title}</div>
                 <div className="text-sm text-gray-600">{f.desc}</div>
@@ -1013,7 +1013,7 @@ export default function PawaharaAI() {
           <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">無料で診断する</h2>
           <p className="text-center text-gray-500 text-sm mb-8">無料3回まで / プレミアムプランで無制限</p>
 
-          <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm space-y-6">
+          <div className="backdrop-blur-sm bg-white/95 rounded-2xl p-8 border border-gray-200 shadow-lg space-y-6">
             {/* プリセット */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">よくある問題（タップで追加）</label>
@@ -1233,7 +1233,7 @@ export default function PawaharaAI() {
                 </button>
               </div>
             )}
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="backdrop-blur-sm bg-white/95 rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
               <div className="flex border-b border-gray-200 overflow-x-auto">
                 {TABS.map((tab) => (
                   <button

@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
 const SITE_URL = "https://pawahara-ai.vercel.app";
 const TITLE = "パワハラ対策AI｜状況を入力するだけで証拠収集・内容証明・申告書を即生成";
@@ -171,7 +169,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
         />
       </head>
-      <body className={`${geistSans.variable} antialiased`}>
+      <body className="antialiased">
         {children}
         <Analytics />
         {/* Microsoft Clarity — pokkoriがhttps://clarity.microsoft.com/でプロジェクト登録後にIDを設定 */}

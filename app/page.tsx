@@ -5,6 +5,37 @@ import KomojuButton from "@/components/KomojuButton";
 import PawaharaChecklist from "@/components/PawaharaChecklist";
 import EvidenceTimeline from "@/components/EvidenceTimeline";
 import { track } from '@vercel/analytics';
+import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
+
+const HISTORY_KEY = "powerhara_history";
+const HISTORY_LIMIT = 5;
+
+interface DiagnosisHistory {
+  text: string;
+  date: string;
+}
+
+function loadHistory(): DiagnosisHistory[] {
+  if (typeof window === "undefined") return [];
+  try {
+    return JSON.parse(localStorage.getItem(HISTORY_KEY) ?? "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory(situationText: string): void {
+  if (typeof window === "undefined") return;
+  const prev = loadHistory();
+  const entry: DiagnosisHistory = {
+    text: situationText.slice(0, 50),
+    date: new Date().toLocaleString("ja-JP"),
+  };
+  const updated = [entry, ...prev].slice(0, HISTORY_LIMIT);
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+  } catch { /* noop */ }
+}
 
 const FREE_LIMIT = 3;
 const TABS = ["法的評価", "証拠収集GL", "内容証明文", "申告書", "選択肢マップ"] as const;
@@ -286,6 +317,9 @@ export default function PawaharaAI() {
   const [counterUsers, setCounterUsers] = useState(0);
   const [counterCerts, setCounterCerts] = useState(0);
   const [counterEvidence, setCounterEvidence] = useState(0);
+  const [streakData, setStreakData] = useState<StreakData | null>(null);
+  const [streakMilestone, setStreakMilestone] = useState<string | null>(null);
+  const [diagnosisHistory, setDiagnosisHistory] = useState<DiagnosisHistory[]>([]);
   const resultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -295,6 +329,13 @@ export default function PawaharaAI() {
       .catch(() => {});
     // localStorageから初期値を読み込む（表示用補助）
     setUsageCount(getUsageCount());
+    // ストリーク更新
+    const streak = updateStreak("powerhara");
+    setStreakData(streak);
+    const milestone = getStreakMilestoneMessage(streak.count);
+    if (milestone) setStreakMilestone(milestone);
+    // 診断履歴読み込み
+    setDiagnosisHistory(loadHistory());
   }, []);
 
   // カウンターアニメーション
@@ -388,6 +429,9 @@ export default function PawaharaAI() {
         setResult(parseResult(fullText));
       }
       setResult(parseResult(fullText));
+      // 診断履歴に保存
+      saveHistory(situation);
+      setDiagnosisHistory(loadHistory());
     } catch {
       setError("生成中にエラーが発生しました。もう一度お試しください。");
     } finally {
@@ -427,7 +471,7 @@ export default function PawaharaAI() {
       {showPayjp && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
-            <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <button onClick={() => setShowPayjp(false)} aria-label="プレミアムプラン登録モーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
             <h2 className="text-lg font-bold mb-4 text-center">プレミアムプランに登録</h2>
             {payjpPlan === "light" ? (
               <KomojuButton planId="light" planLabel="ライトプラン ¥980/月を始める" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50" />
@@ -457,6 +501,7 @@ export default function PawaharaAI() {
                 </ul>
                 <button
                   onClick={() => { track('upgrade_click', { service: 'パワハラ対策AI', plan: 'light' }); setPayjpPlan("light"); setShowPaywall(false); setShowPayjp(true); }}
+                  aria-label="ライトプラン（¥980/月）で登録を始める"
                   className="w-full border border-red-400 text-red-600 font-bold py-2 rounded-lg hover:bg-red-50 text-sm"
                 >
                   ライトプランで始める
@@ -476,13 +521,14 @@ export default function PawaharaAI() {
                 </ul>
                 <button
                   onClick={() => { track('upgrade_click', { service: 'パワハラ対策AI', plan: 'standard' }); setPayjpPlan("standard"); setShowPaywall(false); setShowPayjp(true); }}
+                  aria-label="スタンダードプラン（¥2,980/月）で登録を始める"
                   className="w-full bg-red-600 text-white font-bold py-2 rounded-lg hover:bg-red-700 text-sm"
                 >
                   スタンダードで始める
                 </button>
               </div>
             </div>
-            <button onClick={() => setShowPaywall(false)} className="text-xs text-gray-400">閉じる</button>
+            <button onClick={() => setShowPaywall(false)} aria-label="ペイウォールを閉じる" className="text-xs text-gray-400">閉じる</button>
           </div>
         </div>
       )}
@@ -1133,7 +1179,7 @@ export default function PawaharaAI() {
             {!isPremium && (
               <div className="text-center">
                 <p className="text-xs text-gray-400 mb-2">残り無料回数: {Math.max(0, FREE_LIMIT - usageCount)}回</p>
-                <button onClick={() => startCheckout("standard")} className="text-sm text-red-600 underline hover:text-red-800">
+                <button onClick={() => startCheckout("standard")} aria-label="プレミアムプランにアップグレードして無制限で利用する" className="text-sm text-red-600 underline hover:text-red-800">
                   プランを選んで無制限に使う（¥980/月〜）→
                 </button>
               </div>
@@ -1180,6 +1226,7 @@ export default function PawaharaAI() {
                 </div>
                 <button
                   onClick={() => startCheckout("standard")}
+                  aria-label="スタンダードプランにアップグレードして内容証明・申告書を生成する"
                   className="shrink-0 bg-red-600 text-white font-bold px-6 py-2.5 rounded-xl hover:bg-red-700 text-sm whitespace-nowrap"
                 >
                   今すぐアップグレード →
@@ -1220,12 +1267,14 @@ export default function PawaharaAI() {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="診断結果をXにシェアする"
                     className="text-sm text-white bg-sky-500 rounded-lg px-4 py-2 hover:bg-sky-600 transition-colors"
                   >
                     𝕏 シェア
                   </a>
                   <button
                     onClick={copyTab}
+                    aria-label={`${activeTab}タブの内容をクリップボードにコピー`}
                     className="text-sm text-gray-500 border border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors"
                   >
                     📋 コピー
@@ -1331,6 +1380,38 @@ export default function PawaharaAI() {
             </div>
           )}
 
+          {/* ストリーク表示 */}
+          {streakData && streakData.count >= 2 && (
+            <div className="mt-6 bg-amber-50 border border-amber-300 rounded-xl px-5 py-4 flex items-center gap-4">
+              <div className="text-3xl font-black text-amber-600">{streakData.count}</div>
+              <div>
+                <p className="text-sm font-bold text-amber-800">日連続で診断中！</p>
+                <p className="text-xs text-amber-600">最長記録: {streakData.longestStreak}日 / 累計: {streakData.totalDays}日</p>
+              </div>
+              {streakMilestone && (
+                <span className="ml-auto text-xs font-bold bg-amber-400 text-white px-3 py-1 rounded-full">{streakMilestone}</span>
+              )}
+            </div>
+          )}
+
+          {/* 診断履歴パネル */}
+          {diagnosisHistory.length > 0 && (
+            <div className="mt-6 bg-white border border-gray-200 rounded-xl p-5">
+              <h3 className="text-sm font-bold text-gray-700 mb-3">過去の診断履歴（直近{diagnosisHistory.length}件）</h3>
+              <ul className="space-y-2">
+                {diagnosisHistory.map((h, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-gray-600 border-b border-gray-100 pb-2 last:border-0 last:pb-0">
+                    <span className="shrink-0 text-xs font-bold bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full mt-0.5">{i + 1}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="truncate text-sm text-gray-800">{h.text}{h.text.length >= 50 ? "…" : ""}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">{h.date}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {/* 証拠保全チェックリスト */}
           <PawaharaChecklist />
           {/* 証拠記録タイムライン */}
@@ -1389,6 +1470,7 @@ export default function PawaharaAI() {
               </ul>
               <button
                 onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
+                aria-label="無料プランで診断ツールへスクロールして試す"
                 className="w-full border border-red-600 text-red-600 font-bold py-3 rounded-xl hover:bg-red-50 transition-colors"
               >
                 無料で試す
@@ -1405,6 +1487,7 @@ export default function PawaharaAI() {
               </ul>
               <button
                 onClick={() => startCheckout("light")}
+                aria-label="ライトプラン（¥980/月）の登録を開始する"
                 className="w-full border border-red-600 text-red-600 font-bold py-3 rounded-xl hover:bg-red-50 transition-colors"
               >
                 ライトプランで始める
@@ -1423,6 +1506,7 @@ export default function PawaharaAI() {
               </ul>
               <button
                 onClick={() => startCheckout("standard")}
+                aria-label="スタンダードプラン（¥2,980/月）にアップグレードして全機能を無制限で使う"
                 className="w-full bg-white text-red-600 font-bold py-3 rounded-xl hover:bg-red-50 transition-colors"
               >
                 スタンダードにアップグレード
@@ -1436,10 +1520,12 @@ export default function PawaharaAI() {
             <p className="text-gray-400 mt-2 text-sm">解雇・大幅減給・継続的ハラスメントは法的手続きが有効です</p>
             <div className="grid grid-cols-2 gap-3 mt-4">
               <a href="https://www.bengo4.com/c_1076/" target="_blank" rel="noopener noreferrer"
+                 aria-label="弁護士ドットコムで労働問題の無料相談を申し込む（外部サイト）"
                  className="bg-green-700 text-white text-center py-3 px-4 rounded-lg text-sm font-bold hover:bg-green-600">
                 弁護士ドットコム<br/><span className="text-xs font-normal">無料相談受付中</span>
               </a>
               <a href="https://roudou-pro.com/" target="_blank" rel="noopener noreferrer"
+                 aria-label="ベンナビ労働問題で近くの弁護士を探す（外部サイト）"
                  className="bg-blue-700 text-white text-center py-3 px-4 rounded-lg text-sm font-bold hover:bg-blue-600">
                 ベンナビ労働問題<br/><span className="text-xs font-normal">近くの弁護士を探す</span>
               </a>
@@ -1513,6 +1599,7 @@ export default function PawaharaAI() {
           <div className="mt-6 text-center">
             <button
               onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
+              aria-label="解決事例を参考に自分のパワハラ対策書類を今すぐ無料3回作成する"
               className="inline-block bg-red-600 text-white font-bold px-8 py-3 rounded-xl hover:bg-red-700 transition-colors"
             >
               自分の書類を今すぐ作成する（無料3回）→
@@ -1643,6 +1730,7 @@ export default function PawaharaAI() {
             href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("パワハラ対策AI — 状況を入力するだけで内容証明・申告書・退職交渉文を15秒で作成📄 無料で試せます → https://pawahara-ai.vercel.app #パワハラ #パワハラ対策 #労働問題")}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="パワハラ対策AIをXでシェアする"
             className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl text-sm transition-colors"
           >
             <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
@@ -1654,6 +1742,7 @@ export default function PawaharaAI() {
             href={"https://line.me/R/msg/text/?" + encodeURIComponent("パワハラ対策AI📄 状況を入力するだけで内容証明・申告書を15秒で作成！無料で試せます → https://pawahara-ai.vercel.app")}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="パワハラ対策AIをLINEで友人に送る"
             className="inline-flex items-center gap-2 text-white font-bold py-3 px-6 rounded-xl text-sm transition-colors"
             style={{ background: "#06C755" }}
           >

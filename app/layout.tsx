@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
+import { Noto_Sans_JP } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-import Script from "next/script";
+import FeedbackButton from "@/components/FeedbackButton";
 import "./globals.css";
+
+const notoSansJP = Noto_Sans_JP({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+  variable: "--font-noto-sans-jp",
+});
 
 
 const SITE_URL = "https://pawahara-ai.vercel.app";
@@ -29,6 +37,7 @@ export const metadata: Metadata = {
     images: ["/og.png"],
   },
   metadataBase: new URL(SITE_URL),
+  other: { "theme-color": "#0B0F1E" },
 };
 
 const breadcrumbLd = {
@@ -171,7 +180,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" className={`dark ${notoSansJP.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -182,19 +191,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
         />
       </head>
-      <body className="antialiased">
+      <body className={`${notoSansJP.className} antialiased`}>
         {children}
+        <footer className="flex justify-center py-2">
+          <FeedbackButton serviceName="パワハラ対策AI" />
+        </footer>
         <Analytics />
-        {/* Microsoft Clarity — pokkoriがhttps://clarity.microsoft.com/でプロジェクト登録後にIDを設定 */}
-        <Script id="clarity-script" strategy="afterInteractive">
-          {`
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "CLARITY_PROJECT_ID_HERE");
-          `}
-        </Script>
+        {/* Microsoft Clarity: IDが設定されたら追加する */}
       </body>
     </html>
   );

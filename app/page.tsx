@@ -12,6 +12,7 @@ import { StreakBanner } from "@/components/StreakBanner";
 import { UsageCounter } from "@/components/UsageCounter";
 import { THEMES } from "@/lib/design-system-themes";
 import { CrossSell } from "@/components/CrossSell";
+import { TrustBadge } from "@/components/TrustBadge";
 const T = THEMES.legal;
 
 /* ---- SVG Icon helper (replaces all emoji) ---- */
@@ -714,6 +715,7 @@ export default function PawaharaAI() {
  </div>
  </div>
  <div className="max-w-xs mx-auto mb-4"><UsageCounter /></div>
+ <TrustBadge />
  <button
  onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
  aria-label="無料3回の書類作成ツールへスクロール"

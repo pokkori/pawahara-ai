@@ -11,6 +11,7 @@ import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } 
 import { StreakBanner } from "@/components/StreakBanner";
 import { UsageCounter } from "@/components/UsageCounter";
 import { THEMES } from "@/lib/design-system-themes";
+import { CrossSell } from "@/components/CrossSell";
 const T = THEMES.legal;
 
 /* ---- SVG Icon helper (replaces all emoji) ---- */
@@ -718,8 +719,9 @@ export default function PawaharaAI() {
  aria-label="無料3回の書類作成ツールへスクロール"
  className="bg-red-500 text-white text-lg font-bold px-8 py-4 rounded-xl hover:bg-red-400 transition-colors shadow-xl"
  >
- 無料3回 — 今すぐ書類を作成する
+ 無料でAIに相談する
  </button>
+ <p className="text-xs opacity-60 mt-2">※匿名OK・登録不要</p>
  <div className="flex justify-center gap-8 mt-10 text-sm text-white/50">
  <span>登録不要</span>
  <span>無料3回</span>
@@ -1835,6 +1837,8 @@ export default function PawaharaAI() {
  </section>
 
  {/* Footer */}
+ <CrossSell currentService="パワハラ対策AI" />
+
  <footer className="border-t border-white/10 py-8 px-6">
  <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/40">
  <span>© 2026 パワハラ対策AI</span>

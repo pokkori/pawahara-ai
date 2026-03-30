@@ -533,6 +533,37 @@ export default function PawaharaAI() {
  };
 
  return (
+ <>
+ <script
+   type="application/ld+json"
+   dangerouslySetInnerHTML={{
+     __html: JSON.stringify({
+       '@context': 'https://schema.org',
+       '@type': 'FAQPage',
+       mainEntity: [
+         { '@type': 'Question', name: 'どんなパワハラ事例に対応していますか？', acceptedAnswer: { '@type': 'Answer', text: '怒鳴り・無視・過大な業務・個人攻撃・SNS投稿など厚生労働省が定める6類型すべてに対応。証拠記録・社内相談・法的手続きまでサポートします。' } },
+         { '@type': 'Question', name: '弁護士に相談するより何が良いですか？', acceptedAnswer: { '@type': 'Answer', text: '弁護士着手金の相場は¥30〜50万。本サービスは月額¥980から24時間いつでも対応策を生成できます。まず状況整理→必要なら弁護士紹介まで一貫してサポートします。' } },
+         { '@type': 'Question', name: '証拠が残っていなくても使えますか？', acceptedAnswer: { '@type': 'Answer', text: 'はい。証拠がない状態でも、今後の証拠収集方法・記録のつけ方・証人確保の手順をAIがアドバイスします。' } },
+         { '@type': 'Question', name: '会社に知られずに使えますか？', acceptedAnswer: { '@type': 'Answer', text: '完全に匿名でご利用いただけます。入力した情報は会社・上司・人事部門には一切共有されません。' } },
+         { '@type': 'Question', name: 'パワハラ防止法（労働施策総合推進法）とは何ですか？', acceptedAnswer: { '@type': 'Answer', text: '2020年6月に施行された法律で、すべての企業にパワーハラスメント防止措置が義務付けられています。違反した場合は民法709条（不法行為）に基づく損害賠償請求が可能です。' } },
+         { '@type': 'Question', name: '内容証明文は実際に使えますか？', acceptedAnswer: { '@type': 'Answer', text: 'AIが生成する内容証明文はドラフト（参考文）です。送付前に内容を確認し、必要に応じて弁護士にレビューを依頼することをお勧めします。' } },
+       ],
+     }).replace(/</g, '\\u003c'),
+   }}
+ />
+ <script
+   type="application/ld+json"
+   dangerouslySetInnerHTML={{
+     __html: JSON.stringify({
+       '@context': 'https://schema.org',
+       '@type': 'SoftwareApplication',
+       name: 'パワハラ対策AI',
+       operatingSystem: 'Web',
+       applicationCategory: 'LifestyleApplication',
+       offers: { '@type': 'Offer', price: 0, priceCurrency: 'JPY' },
+     }).replace(/</g, '\\u003c'),
+   }}
+ />
  <main className="min-h-screen text-white relative" style={{background: T.bg}}>
  <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
  {[{size:4,x:'10%',y:'20%',dur:'6s',delay:'0s'},{size:3,x:'85%',y:'15%',dur:'8s',delay:'1s'},{size:5,x:'70%',y:'60%',dur:'7s',delay:'2s'},{size:3,x:'25%',y:'75%',dur:'9s',delay:'0.5s'},{size:4,x:'50%',y:'40%',dur:'10s',delay:'3s'},{size:6,x:'90%',y:'80%',dur:'7s',delay:'1.5s'}].map((p,i)=>(<div key={i} className="absolute rounded-full animate-pulse" style={{width:p.size,height:p.size,left:p.x,top:p.y,background:T.particleColor,animationDuration:p.dur,animationDelay:p.delay}}/>))}
@@ -1821,5 +1852,6 @@ export default function PawaharaAI() {
  </footer>
  <AdBanner slot="" />
  </main>
+ </>
  );
 }

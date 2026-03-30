@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import FeedbackButton from "@/components/FeedbackButton";
+import { GoogleAdScript } from "@/components/GoogleAdScript";
 import "./globals.css";
 
 const notoSansJP = Noto_Sans_JP({
@@ -197,6 +198,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <FeedbackButton serviceName="パワハラ対策AI" />
         </footer>
         <Analytics />
+        <GoogleAdScript />
         {/* Microsoft Clarity: IDが設定されたら追加する */}
       </body>
     </html>

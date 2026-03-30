@@ -8,6 +8,8 @@ import EvidenceTimeline from "@/components/EvidenceTimeline";
 import { ShareButtons } from "@/components/ShareButtons";
 import { track } from '@vercel/analytics';
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
+import { StreakBanner } from "@/components/StreakBanner";
+import { UsageCounter } from "@/components/UsageCounter";
 import { THEMES } from "@/lib/design-system-themes";
 const T = THEMES.legal;
 
@@ -654,6 +656,8 @@ export default function PawaharaAI() {
  </p>
  </div>
 
+ <StreakBanner />
+
  {/* Hero */}
  <section className="relative overflow-hidden">
  <div className="absolute inset-0 bg-gradient-to-br from-red-50 via-rose-50 to-orange-50 pointer-events-none" />
@@ -708,6 +712,7 @@ export default function PawaharaAI() {
  <span className="text-white/60">まずお試しください</span>
  </div>
  </div>
+ <div className="max-w-xs mx-auto mb-4"><UsageCounter /></div>
  <button
  onClick={() => document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" })}
  aria-label="無料3回の書類作成ツールへスクロール"

@@ -20,7 +20,12 @@ export default function Image() {
           fontFamily: "sans-serif",
         }}
       >
-        <div style={{ fontSize: 80, marginBottom: 12, display: "flex" }}>🛡️</div>
+        <div style={{ fontSize: 80, marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="#93c5fd" stroke="#93c5fd" strokeWidth="1" />
+            <path d="M9 12l2 2 4-4" stroke="#1a1a2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
         <div style={{ fontSize: 52, fontWeight: 700, color: "#fff", marginBottom: 12, textAlign: "center", display: "flex" }}>
           パワハラ対策AI
         </div>

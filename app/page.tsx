@@ -564,6 +564,8 @@ export default function PawaharaAI() {
        name: 'パワハラ対策AI',
        operatingSystem: 'Web',
        applicationCategory: 'LifestyleApplication',
+       description: 'パワーハラスメントの証拠収集・記録方法・内容証明文ドラフトをAIが生成。厚労省の6類型対応・匿名利用可能・弁護士紹介まで一貫サポート。月額¥980から利用できるパワハラ対策Webサービス。',
+       url: 'https://pawahara-ai.vercel.app',
        offers: { '@type': 'Offer', price: 0, priceCurrency: 'JPY' },
      }).replace(/</g, '\\u003c'),
    }}

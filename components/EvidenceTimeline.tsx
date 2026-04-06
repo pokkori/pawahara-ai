@@ -351,7 +351,7 @@ export default function EvidenceTimeline() {
                         className="shrink-0 text-xs text-gray-400 hover:text-red-500 transition-colors mt-0.5"
                         title="削除"
                       >
-                        ✕
+                        <svg className="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
                       </button>
                     </div>
                   </div>

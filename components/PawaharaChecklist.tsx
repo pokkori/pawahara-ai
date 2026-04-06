@@ -143,7 +143,7 @@ export default function PawaharaChecklist() {
         className="w-full flex items-center justify-between px-6 py-4 hover:bg-red-50 transition-colors"
       >
         <div className="flex items-center gap-3 text-left">
-          <span className="text-xl">📋</span>
+          <svg className="w-5 h-5 text-red-600 shrink-0" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="4" y="2" width="12" height="16" rx="2" stroke="currentColor" strokeWidth="1.5"/><path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><rect x="7" y="1" width="6" height="3" rx="1" stroke="currentColor" strokeWidth="1.2"/></svg>
           <div>
             <p className="font-bold text-gray-900 text-sm">パワハラ証拠保全チェックリスト</p>
             <p className="text-xs text-gray-500 mt-0.5">3フェーズ10項目 — 進捗が保存されます</p>
@@ -166,7 +166,7 @@ export default function PawaharaChecklist() {
         <div className="flex justify-between text-xs text-gray-400 mt-1">
           <span>{pct}% 完了</span>
           {doneCount === TOTAL && (
-            <span className="text-green-600 font-bold animate-pulse">✅ 全項目クリア！</span>
+            <span className="text-green-600 font-bold animate-pulse flex items-center gap-1"><svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8l4 4 8-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>全項目クリア！</span>
           )}
         </div>
       </div>
@@ -215,7 +215,7 @@ export default function PawaharaChecklist() {
 
           {doneCount === TOTAL && (
             <div className="bg-green-50 border border-green-300 rounded-xl p-4 text-center">
-              <p className="text-green-700 font-bold text-sm">🎉 全10項目クリア！</p>
+              <p className="text-green-700 font-bold text-sm">全10項目クリア！</p>
               <p className="text-xs text-green-600 mt-1">十分な証拠保全が完了しています。弁護士・労基署への相談に進みましょう。</p>
             </div>
           )}

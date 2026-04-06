@@ -85,11 +85,11 @@ export default function PawaharaChecklist() {
           <button
             onClick={() => setShowCompleteModal(false)}
             aria-label="モーダルを閉じる"
-            className="absolute top-3 right-4 text-gray-400 text-xl hover:text-gray-600"
+            className="absolute top-3 right-4 text-gray-400 hover:text-gray-600"
           >
-            ✕
+            <svg className="w-5 h-5" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
           </button>
-          <div className="text-5xl mb-3">🎉</div>
+          <div className="flex justify-center mb-3"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
           <h2 className="text-lg font-black text-gray-900 mb-2">証拠収集完了！</h2>
           <p className="text-sm text-gray-600 mb-5">
             全10項目クリアしました。<br />

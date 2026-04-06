@@ -149,7 +149,7 @@ export default function EvidenceTimeline() {
         className="w-full flex items-center justify-between px-6 py-4 hover:bg-blue-50 transition-colors"
       >
         <div className="flex items-center gap-3 text-left">
-          <span className="text-xl">📅</span>
+          <svg className="w-5 h-5 text-blue-600 shrink-0" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" strokeWidth="1.5"/><path d="M7 2v4M13 2v4M3 8h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
           <div>
             <p className="font-bold text-gray-900 text-sm">証拠記録タイムライン</p>
             <p className="text-xs text-gray-500 mt-0.5">
@@ -199,7 +199,7 @@ export default function EvidenceTimeline() {
 
           {saved && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-3 text-center text-sm text-green-700 font-bold">
-              ✅ 記録を保存しました
+              記録を保存しました
             </div>
           )}
 
@@ -333,7 +333,7 @@ export default function EvidenceTimeline() {
                           </span>
                           {entry.location && (
                             <span className="text-xs text-gray-500 bg-white border border-gray-200 rounded-full px-2 py-0.5">
-                              📍 {entry.location}
+                              {entry.location}
                             </span>
                           )}
                           <span className="text-xs bg-white border border-gray-200 rounded-full px-2 py-0.5 text-gray-600">

@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import FeedbackButton from "@/components/FeedbackButton";
 import { GoogleAdScript } from "@/components/GoogleAdScript";
+import CookieBanner from "@/components/CookieBanner";
 import "./globals.css";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
@@ -260,6 +261,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Analytics />
         <SpeedInsights />
         <GoogleAdScript />
+        {/* Cookie同意バナー（電気通信事業法対応） */}
+        <CookieBanner />
         {process.env.NEXT_PUBLIC_CLARITY_ID && process.env.NODE_ENV === 'production' && (
           <Script
             id="clarity-init"

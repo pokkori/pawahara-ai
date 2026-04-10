@@ -12,7 +12,7 @@ interface KeywordData {
   lastUpdated: string;
 }
 
-export const KEYWORDS: Record<string, KeywordData> = {
+const KEYWORDS: Record<string, KeywordData> = {
   "pawahara-hanrei-jirei": {
     title: "パワハラ 判例 事例｜具体的な認定基準をAIが解説",
     h1: "パワハラ 判例 事例",

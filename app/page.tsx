@@ -1890,7 +1890,7 @@ export default function PawaharaAI() {
  {/* シェアセクション */}
  <section className="py-8 px-6 text-center border-t border-white/10">
  <p className="text-sm text-white/50 mb-4">パワハラで困っている知人に教えてあげてください</p>
- <ShareButtons url="https://pawahara-ai.vercel.app" text="パワハラ対策AIを使ってみた！" hashtags="パワハラ対策AI" />
+ <ShareButtons url="https://pawahara-ai.vercel.app" text="パワハラに悩んでいる人へ。AIが弁護士費用の1/100で対処法を提示してくれた。" hashtags="パワハラ対策AI" />
  </section>
 
  {/* Footer */}

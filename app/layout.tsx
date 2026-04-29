@@ -8,6 +8,7 @@ import { GoogleAdScript } from "@/components/GoogleAdScript";
 import CookieBanner from "@/components/CookieBanner";
 import "./globals.css";
 import { InstallPrompt } from "@/components/InstallPrompt";
+import { PHProvider } from "./providers";
 
 const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],
@@ -19,7 +20,7 @@ const notoSansJP = Noto_Sans_JP({
 
 const SITE_URL = "https://pawahara-ai.vercel.app";
 const TITLE = "パワハラ対策AI｜状況を入力するだけで証拠収集・内容証明・申告書を即生成";
-const DESC = "パワハラ・残業未払い・不当解雇の状況を入力するだけ。法的評価・証拠収集チェックリスト・内容証明文・労基署申告書を自動生成。弁護士費用ゼロで自分を守る。無料3回から。";
+const DESC = "上司のパワハラ、弁護士費用の1/100でAIが対処法を即提示。証拠収集から対話スクリプトまで。";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -253,24 +254,26 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body className={`${notoSansJP.className} antialiased`}>
-        {children}
-        <InstallPrompt />
-        <footer className="flex justify-center py-2">
-          <FeedbackButton serviceName="パワハラ対策AI" />
-        </footer>
-        <Analytics />
-        <SpeedInsights />
-        <GoogleAdScript />
-        {/* Cookie同意バナー（電気通信事業法対応） */}
-        <CookieBanner />
-        {process.env.NEXT_PUBLIC_CLARITY_ID && process.env.NODE_ENV === 'production' && (
-          <Script
-            id="clarity-init"
-            strategy="afterInteractive"
-          >
-            {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${process.env.NEXT_PUBLIC_CLARITY_ID}");`}
-          </Script>
-        )}
+        <PHProvider>
+          {children}
+          <InstallPrompt />
+          <footer className="flex justify-center py-2">
+            <FeedbackButton serviceName="パワハラ対策AI" />
+          </footer>
+          <Analytics />
+          <SpeedInsights />
+          <GoogleAdScript />
+          {/* Cookie同意バナー（電気通信事業法対応） */}
+          <CookieBanner />
+          {process.env.NEXT_PUBLIC_CLARITY_ID && process.env.NODE_ENV === 'production' && (
+            <Script
+              id="clarity-init"
+              strategy="afterInteractive"
+            >
+              {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${process.env.NEXT_PUBLIC_CLARITY_ID}");`}
+            </Script>
+          )}
+        </PHProvider>
       </body>
     </html>
   );
